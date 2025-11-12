@@ -1,0 +1,31 @@
+{
+  "name": "bytejournal-backend",
+  "version": "1.0.0",
+  "description": "Backend Application for the Byte Journal Application",
+  "main": "HttpServer.js",
+  "scripts": {
+    "test": "test",
+    "start:dev": "npx ts-node ./src/HttpServer",
+    "build": "npx tsc"
+  },
+  "author": "NBoas42",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.39.1",
+    "express": "^5.1.0",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.11",
+    "npm": "^11.6.2",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "typeorm": "^0.3.27"
+  }
+}
