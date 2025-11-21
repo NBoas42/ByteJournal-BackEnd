@@ -1,3 +1,4 @@
+type PermissionType = 'ADMIN' | 'USER'
 export interface Account {
     id: string;
     name: string;

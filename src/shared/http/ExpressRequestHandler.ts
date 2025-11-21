@@ -9,6 +9,7 @@ export async function expressRequestHandler(request: Request, response: Response
         .status(result.status)
         .send(result);
     } catch (error: any) {
+        console.log(error);
         response
         .status(error.status || 500)
         .send({

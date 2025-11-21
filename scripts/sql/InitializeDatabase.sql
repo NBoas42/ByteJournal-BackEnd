@@ -18,11 +18,9 @@ CREATE TABLE account (
 -- Journal
 CREATE TABLE journal (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  color varchar NOT NULL,
   account_id UUID NOT NULL,
   title varchar NOT NULL,
   description varchar,
-  current_sprint varchar,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (account_id) REFERENCES account(id) ON DELETE CASCADE

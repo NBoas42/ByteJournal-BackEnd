@@ -1,16 +1,14 @@
 import {Account} from '../dto/Account';
+import { AppDataSource } from '../../shared/database/PostgresProvider';
+import { AccountEntity } from '../entity/AccountEntity';
 
 export class AccountPersistenceService {
-
+      
         async getAccountById(id: string): Promise<Account> {
-            return {
-                id: id,
-                name: 'Nate Boas',
-                email: 'nbboas+spam@gmail.com',
-                picture: 'https://avatar.iran.liara.run/public/boy?username=Ash',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            }
+            await AppDataSource.initialize();
+            const accountRepository = AppDataSource.getRepository(AccountEntity);
+            const result = await accountRepository.findOne({ where:{ id } }) as Account;
+            return result;
         }
 
         async createAccount (account: Account): Promise<boolean> {

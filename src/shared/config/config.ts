@@ -1,10 +1,15 @@
+import { DatabaseType, DataSource } from "typeorm";
 
-interface database {
-    userName: string,
-    password: string,
-    URL: string,
+export interface ApplicationConfig {
+    database:DatabaseConfig
 }
 
-interface ApplicationConfig {
-    database:database
+interface DatabaseConfig {
+    userName: string;
+    password: string;
+    host: string;
+    port:number;
+    name:string;
+    type: dbType;
 }
+type dbType = "mysql"| "postgres"| "sqlite";
