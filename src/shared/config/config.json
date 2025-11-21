@@ -1,7 +1,0 @@
-{
-    "database":{
-        "userName": "string",
-        "password": "string",
-        "URL": "string"
-    }
-}
