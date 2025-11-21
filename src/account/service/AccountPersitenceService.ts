@@ -22,12 +22,8 @@ export class AccountPersistenceService {
         async updateAccountById (id: string, accountToUpdate: Account): Promise<Account> {
             console.log(accountToUpdate);
             return {
-                id: id,
-                name: 'Nate Boas',
-                email: 'nbboas+spam@gmail.com',
-                picture: 'https://avatar.iran.liara.run/public/boy?username=Ash',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+               ...accountToUpdate,
+               id: id,
             }
         }
     
