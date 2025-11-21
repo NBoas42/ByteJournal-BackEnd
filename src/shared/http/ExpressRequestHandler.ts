@@ -1,10 +1,20 @@
 import { Application,  Request, Response, NextFunction } from 'express';
+import { ControllerOperation } from './types';
 
-export async function expressRequestHandler(request: Request, response: Response, operation: Function){
+
+export async function expressRequestHandler(request: Request, response: Response, operation: ControllerOperation){
     try{
         const result = await operation(request);
-        response.status(200).send({status:200, data:'Hello World'})
-    } catch (error: any) { // TO DO Add Typing Here
-        response.status(200).send({message:error.message, stack: error.stack});
+        response
+        .status(result.status)
+        .send(result);
+    } catch (error: any) {
+        response
+        .status(error.status || 500)
+        .send({
+            status: error.status || 500,
+            error: [error.message],
+            data: undefined,
+        });
     }
 }

@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
-import { registerUserRoutes } from './user/api/UserRoutes';
+import { registerUserRoutes } from './account/http/AccountRoutes';
 
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
 
 registerUserRoutes(app);
 
