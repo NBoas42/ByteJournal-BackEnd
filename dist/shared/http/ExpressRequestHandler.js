@@ -8,7 +8,8 @@ async function expressRequestHandler(request, response, operation) {
             .status(result.status)
             .send(result);
     }
-    catch (error) { // TO DO Add Typing Here
+    catch (error) {
+        console.log(error);
         response
             .status(error.status || 500)
             .send({

@@ -1,13 +1,21 @@
 import {Account} from '../dto/Account';
-import { AppDataSource } from '../../shared/database/PostgresProvider';
 import { AccountEntity } from '../entity/AccountEntity';
+import { DataSource } from 'typeorm';
 
 export class AccountPersistenceService {
+
+        accountRepository: any;
+
+        static get inject() {
+            return ['DBConnection'];
+        }
+
+        constructor( dbConnection: DataSource){
+            this.accountRepository = dbConnection.getRepository(AccountEntity);
+        }
       
         async getAccountById(id: string): Promise<Account> {
-            await AppDataSource.initialize();
-            const accountRepository = AppDataSource.getRepository(AccountEntity);
-            const result = await accountRepository.findOne({ where:{ id } }) as Account;
+            const result = await this.accountRepository.findOne({ where:{ id } }) as Account;
             return result;
         }
 

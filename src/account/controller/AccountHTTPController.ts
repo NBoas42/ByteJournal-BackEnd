@@ -8,8 +8,12 @@ export class AccountHTTPController {
 
     accountPersistenceService: AccountPersistenceService;
 
-    constructor (){
-        this.accountPersistenceService = new AccountPersistenceService();
+    static get inject() {
+        return ['AccountPersistenceService' ];
+    }
+
+    constructor( accountPersistenceService: AccountPersistenceService){
+        this.accountPersistenceService = accountPersistenceService;
     }
 
     async getAccountById(request: Request): Promise<HTTPResponse> {

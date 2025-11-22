@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountHTTPController = void 0;
-const AccountPersitenceService_1 = require("../service/AccountPersitenceService");
 class AccountHTTPController {
-    constructor() {
-        this.accountPersistenceService = new AccountPersitenceService_1.AccountPersistenceService();
+    static get inject() {
+        return ['AccountPersistenceService'];
+    }
+    constructor(accountPersistenceService) {
+        this.accountPersistenceService = accountPersistenceService;
     }
     async getAccountById(request) {
         const { params } = request;
-        const account = this.accountPersistenceService.getAccountById(params.id);
+        const account = await this.accountPersistenceService.getAccountById(params.id);
         return {
             errors: [],
             status: 200,
@@ -16,24 +18,30 @@ class AccountHTTPController {
         };
     }
     async createAccount(request) {
+        const { body } = request; // TODO Probably a better way to deal with this
+        const wasCreated = await this.accountPersistenceService.createAccount(body);
         return {
             errors: [],
             status: 200,
-            data: {}
+            data: wasCreated
         };
     }
     async updateAccountById(request) {
+        const { params, body } = request; // TODO Probably a better way to deal with this
+        const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, body);
         return {
             errors: [],
             status: 200,
-            data: {}
+            data: updatedAccount
         };
     }
     async deleteAccountById(request) {
+        const { params } = request;
+        const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);
         return {
             errors: [],
             status: 200,
-            data: {}
+            data: wasDeleted
         };
     }
 }

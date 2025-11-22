@@ -4,14 +4,22 @@ import bodyParser from 'body-parser';
 import "reflect-metadata"
 
 import { registerUserRoutes } from './account/http/AccountRoutes';
-
-const app = express();
-
-app.use(cors());
-app.use(bodyParser.json());
-
-registerUserRoutes(app);
+import { getInjector } from './shared/dependency-injection/DependecyInjector';
 
 
-app.listen(8000, () => console.log('running on port 8000'));
+const bootstrap = async () =>{
+    const app = express();
+    const injector = await getInjector();
+
+    app.use(cors());
+    app.use(bodyParser.json());
+
+    registerUserRoutes(app,injector);
+
+
+    app.listen(8000, () => console.log('running on port 8000'));
+}
+
+bootstrap();
+
 
