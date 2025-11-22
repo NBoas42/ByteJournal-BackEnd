@@ -7,9 +7,10 @@ import { HTTPResponse } from "../../shared/http/types";
 export class AccountHTTPController {
 
     accountPersistenceService: AccountPersistenceService;
+    state = 'State';// TODO The state is persited the way I have it
 
     static get inject() {
-        return ['AccountPersistenceService' ];
+        return ['AccountPersistenceService'];
     }
 
     constructor( accountPersistenceService: AccountPersistenceService){
@@ -17,6 +18,8 @@ export class AccountHTTPController {
     }
 
     async getAccountById(request: Request): Promise<HTTPResponse> {
+        console.log(this.state);
+        this.state = "Changed State";
         const { params } =  request;
         const account = await this.accountPersistenceService.getAccountById(params.id);
         return {

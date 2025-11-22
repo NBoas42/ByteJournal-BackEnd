@@ -8,22 +8,22 @@ import { Injector } from 'boxed-injector';
 export function registerUserRoutes (app: Application, injector: Injector) {
 
     app.get('/v0/account/:id', ( request, response) => {
-        const controller: AccountHTTPController = injector.get('AccountHTTPController');
+        const controller: AccountHTTPController = injector.create('AccountHTTPController');
         return expressRequestHandler(request, response, controller.getAccountById.bind(controller))
     });
 
     app.post('/v0/account', ( request, response ) => {
-        const controller: AccountHTTPController = injector.get('AccountHTTPController');
+        const controller: AccountHTTPController = injector.create('AccountHTTPController');
         return expressRequestHandler(request, response, controller.createAccount.bind(controller))
     });
 
     app.patch('/v0/account/:id', ( request, response ) => {
-        const controller: AccountHTTPController = injector.get('AccountHTTPController');
+        const controller: AccountHTTPController = injector.create('AccountHTTPController');
         return expressRequestHandler(request, response, controller.updateAccountById.bind(controller))
     });
 
     app.delete('/v0/account/:id', ( request, response ) => {
-        const controller: AccountHTTPController = injector.get('AccountHTTPController');
+        const controller: AccountHTTPController = injector.create('AccountHTTPController');
         return expressRequestHandler(request, response, controller.getAccountById.bind(controller))
     });
     
