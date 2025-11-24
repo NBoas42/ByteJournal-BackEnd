@@ -7,7 +7,7 @@ import { HTTPResponse } from "../../shared/http/types";
 export class AccountHTTPController {
 
     accountPersistenceService: AccountPersistenceService;
-    state = 'State';// TODO The state is persited the way I have it
+    state = 'State';
 
     static get inject() {
         return ['AccountPersistenceService'];
@@ -17,9 +17,8 @@ export class AccountHTTPController {
         this.accountPersistenceService = accountPersistenceService;
     }
 
+    // TODO Add Validation to Request
     async getAccountById(request: Request): Promise<HTTPResponse> {
-        console.log(this.state);
-        this.state = "Changed State";
         const { params } =  request;
         const account = await this.accountPersistenceService.getAccountById(params.id);
         return {
@@ -29,6 +28,7 @@ export class AccountHTTPController {
         }
     }
 
+    // TODO Add Validation to Request
     async createAccount (request: Request): Promise<HTTPResponse> {
         const { body } = request;// TODO Probably a better way to deal with this
         const wasCreated = await this.accountPersistenceService.createAccount(body);
@@ -39,6 +39,7 @@ export class AccountHTTPController {
         }
     }
 
+    // TODO Add Validation to Request
     async updateAccountById (request: Request): Promise<HTTPResponse> {
         const { params, body } = request;// TODO Probably a better way to deal with this
         const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, body);
@@ -49,6 +50,7 @@ export class AccountHTTPController {
         }
     }
 
+    // TODO Add Validation to Request
     async deleteAccountById (request: Request): Promise<HTTPResponse> {
         const { params } =  request;
         const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);

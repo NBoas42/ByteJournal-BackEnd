@@ -1,42 +1,34 @@
 import {Account} from '../dto/Account';
 import { AccountEntity } from '../entity/AccountEntity';
 import { DataSource } from 'typeorm';
+import { AccountPostgresResource } from '../resource/AccountPostgresResouce';
 
 export class AccountPersistenceService {
 
-        accountRepository: any;
+        accountPostgresResource: AccountPostgresResource;
 
         static get inject() {
-            return ['DBConnection'];
+            return ['AccountPostgresResource'];
         }
 
-        constructor( dbConnection: DataSource){
-            this.accountRepository = dbConnection.getRepository(AccountEntity);
+        constructor( accountPostgresResource: AccountPostgresResource){
+            this.accountPostgresResource = accountPostgresResource;
         }
       
         async getAccountById(id: string): Promise<Account> {
-            const result = await this.accountRepository.findOne({ where:{ id } }) as Account;
-            return result;
+            return this.accountPostgresResource.getAccountById(id);
         }
 
-        async createAccount (account: Account): Promise<boolean> {
-            const isSuccessful  = true; 
-            console.log(account);
-            return isSuccessful;
+        async createAccount (accountToCreate: Account): Promise<boolean> {
+             return this.accountPostgresResource.createAccount(accountToCreate);
         }
     
-        async updateAccountById (id: string, accountToUpdate: Account): Promise<Account> {
-            console.log(accountToUpdate);
-            return {
-               ...accountToUpdate,
-               id: id,
-            }
+        async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
+             return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
         }
     
         async deleteAccountById (id: string): Promise<boolean> {
-            const isSuccessful  = true; 
-            console.log(id);
-            return isSuccessful;
+             return this.accountPostgresResource.deleteAccountById(id);
         }
     
 }
