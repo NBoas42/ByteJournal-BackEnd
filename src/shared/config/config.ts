@@ -1,4 +1,3 @@
-import { DatabaseType, DataSource } from "typeorm";
 
 export interface ApplicationConfig {
     database:DatabaseConfig

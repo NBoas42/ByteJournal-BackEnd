@@ -29,6 +29,7 @@ export class AccountHTTPController {
     }
 
     // TODO Add Validation to Request
+    // TODO Add Account Role Admin Access Only
     async createAccount (request: Request): Promise<HTTPResponse> {
         const { body } = request;// TODO Probably a better way to deal with this
         const wasCreated = await this.accountPersistenceService.createAccount(body);
@@ -51,6 +52,8 @@ export class AccountHTTPController {
     }
 
     // TODO Add Validation to Request
+    // TODO Add Account Role Admin Access Only
+    // TODO Add soft delete
     async deleteAccountById (request: Request): Promise<HTTPResponse> {
         const { params } =  request;
         const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);

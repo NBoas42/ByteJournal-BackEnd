@@ -2,10 +2,10 @@
   "name": "bytejournal-backend",
   "version": "1.0.0",
   "description": "Backend Application for the Byte Journal Application",
-  "main": "HttpServer.js",
+  "main": "HTTPServer.js",
   "scripts": {
     "test": "test",
-    "start:dev": "npx ts-node ./src/HttpServer",
+    "start:dev": "npx ts-node ./src/HTTPServer.ts",
     "build": "npx tsc"
   },
   "author": "NBoas42",

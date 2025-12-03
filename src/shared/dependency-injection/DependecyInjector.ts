@@ -2,6 +2,7 @@ import { Injector } from 'boxed-injector';
 import { AccountHTTPController } from '../../account/controller/AccountHTTPController';
 import { AccountPersistenceService } from '../../account/service/AccountPersitenceService';
 import { createDataDBConnection } from '../database/DBConnector';
+import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
 
 let injector: Injector | undefined;
 
@@ -16,6 +17,7 @@ async function buildInjector(): Promise<Injector> {
   // Init Account
   inj.factory('AccountHTTPController', AccountHTTPController);
   inj.factory('AccountPersistenceService', AccountPersistenceService);
+  inj.factory('AccountPostgresResource', AccountPostgresResource);
   return inj;
 }
 

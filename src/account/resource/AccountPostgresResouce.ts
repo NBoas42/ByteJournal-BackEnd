@@ -27,19 +27,19 @@ export class AccountPostgresResource {
             return this.adaptEntityToAccountResponse(account);
         }
 
-        // TODO Create DTO 
+        // TODO Add Specific DTO
         async createAccount (account: Account): Promise<boolean> {
-            const result = this.accountRepository.create(account);
-            if(!result){
+            const result = await this.accountRepository.save(account);
+            if(!result.id){
                 return false;
             }
             return true;
         }
     
-        // TODO Create DTO 
+        // TODO Add Specific DTO
         async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
             const result = await this.accountRepository.update({id}, accountToUpdate);
-            return result.affected === 1 ? true:false;;
+            return result.affected === 1 ? true:false;
 
         }
     

@@ -1,6 +1,4 @@
-import {Account} from '../dto/Account';
-import { AccountEntity } from '../entity/AccountEntity';
-import { DataSource } from 'typeorm';
+import { Account } from '../dto/Account';
 import { AccountPostgresResource } from '../resource/AccountPostgresResouce';
 
 export class AccountPersistenceService {
@@ -19,10 +17,12 @@ export class AccountPersistenceService {
             return this.accountPostgresResource.getAccountById(id);
         }
 
+        // TODO Add Specific DTO
         async createAccount (accountToCreate: Account): Promise<boolean> {
              return this.accountPostgresResource.createAccount(accountToCreate);
         }
-    
+        
+        // TODO Add Specific DTO
         async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
              return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
         }

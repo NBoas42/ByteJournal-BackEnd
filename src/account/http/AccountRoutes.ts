@@ -24,7 +24,7 @@ export function registerUserRoutes (app: Application, injector: Injector) {
 
     app.delete('/v0/account/:id', ( request, response ) => {
         const controller: AccountHTTPController = injector.create('AccountHTTPController');
-        return expressRequestHandler(request, response, controller.getAccountById.bind(controller))
+        return expressRequestHandler(request, response, controller.deleteAccountById.bind(controller))
     });
     
 }
