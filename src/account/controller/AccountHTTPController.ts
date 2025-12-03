@@ -7,7 +7,6 @@ import { HTTPResponse } from "../../shared/http/types";
 export class AccountHTTPController {
 
     accountPersistenceService: AccountPersistenceService;
-    state = 'State';
 
     static get inject() {
         return ['AccountPersistenceService'];
@@ -57,7 +56,6 @@ export class AccountHTTPController {
     async deleteAccountById (request: Request): Promise<HTTPResponse> {
         const { params } =  request;
         const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);
-        
         return {
             errors: [],
             status: 200,
