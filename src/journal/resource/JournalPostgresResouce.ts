@@ -28,6 +28,7 @@ export class JournalPostgresResource {
         }
 
         // TODO Add Specific DTO
+        // TODO Return Created Journal
         async createJournal (journal: Journal): Promise<boolean> {
             const result = await this.journalRepository.save(journal);
             if(!result.id){

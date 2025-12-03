@@ -18,6 +18,7 @@ export class JournalPersistenceService {
         }
 
         // TODO Add Specific DTO
+        // TODO Return Created Journal
         async createJournal (journalToCreate: Journal): Promise<boolean> {
              return this.journalPostgresResource.createJournal(journalToCreate);
         }
