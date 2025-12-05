@@ -41,7 +41,8 @@ CREATE TABLE scratch_pad (
 CREATE TABLE journal_entry (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   journal_id UUID NOT NULL,
-  tag varchar,
+  title varchar NOT NULL,
+  tags varchar[] NOT NULL DEFAULT '{}',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (journal_id) REFERENCES journal(id) ON DELETE CASCADE

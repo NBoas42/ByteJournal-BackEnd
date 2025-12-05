@@ -8,6 +8,7 @@ class AccountHTTPController {
     constructor(accountPersistenceService) {
         this.accountPersistenceService = accountPersistenceService;
     }
+    // TODO Add Validation to Request
     async getAccountById(request) {
         const { params } = request;
         const account = await this.accountPersistenceService.getAccountById(params.id);
@@ -17,6 +18,8 @@ class AccountHTTPController {
             data: account
         };
     }
+    // TODO Add Validation to Request
+    // TODO Add Account Role Admin Access Only
     async createAccount(request) {
         const { body } = request; // TODO Probably a better way to deal with this
         const wasCreated = await this.accountPersistenceService.createAccount(body);
@@ -26,6 +29,7 @@ class AccountHTTPController {
             data: wasCreated
         };
     }
+    // TODO Add Validation to Request
     async updateAccountById(request) {
         const { params, body } = request; // TODO Probably a better way to deal with this
         const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, body);
@@ -35,6 +39,9 @@ class AccountHTTPController {
             data: updatedAccount
         };
     }
+    // TODO Add Validation to Request
+    // TODO Add Account Role Admin Access Only
+    // TODO Add soft delete
     async deleteAccountById(request) {
         const { params } = request;
         const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);

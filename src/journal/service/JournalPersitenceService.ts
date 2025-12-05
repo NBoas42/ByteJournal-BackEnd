@@ -1,7 +1,8 @@
-import { CreateJournalRequest } from '../dto/CreateJournalRequest';
-import { Journal } from '../dto/Journal';
-import { SearchJournalRequest } from '../dto/SearchJournalRequest';
-import { UpdateJournalRequest } from '../dto/UpdateJournalRequest';
+import { Journal } from '../dto/journal/Journal';
+import { SearchJournalRequest } from '../dto/journal/SearchJournalRequest';
+import { CreateJournalRequest } from '../dto/journal/CreateJournalRequest';
+import { UpdateJournalRequest } from '../dto/journal/UpdateJournalRequest';
+
 import { JournalPostgresResource } from '../resource/JournalPostgresResouce';
 
 export class JournalPersistenceService {
@@ -11,7 +12,6 @@ export class JournalPersistenceService {
         static get inject() {
             return [
                 'JournalPostgresResource',
-                'AccountPostgresResource'
             ];
         }
 

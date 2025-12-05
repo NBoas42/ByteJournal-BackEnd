@@ -7,8 +7,13 @@ import { AccountPersistenceService } from '../../account/service/AccountPersiten
 import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
 
 import { JournalHTTPController } from '../../journal/controller/JournalHttpController';
+
 import { JournalPersistenceService } from '../../journal/service/JournalPersitenceService';
+import { JournalEntryPersistenceService } from '../../journal/service/JournalEntryPersitenceService';
+
 import { JournalPostgresResource } from '../../journal/resource/JournalPostgresResouce';
+import { JournalEntryPostgresResource } from '../../journal/resource/JournalEntryPostgresResource';
+
 
 let injector: Injector | undefined;
 
@@ -22,13 +27,19 @@ async function buildInjector(): Promise<Injector> {
 
   // Init Account Module
   inj.factory('AccountHTTPController', AccountHTTPController);
+
   inj.factory('AccountPersistenceService', AccountPersistenceService);
+
   inj.factory('AccountPostgresResource', AccountPostgresResource);
 
   // Init Journal Module
   inj.factory('JournalHTTPController', JournalHTTPController);
+
   inj.factory('JournalPersistenceService', JournalPersistenceService);
+  inj.factory('JournalEntryPersistenceService', JournalEntryPersistenceService);
+
   inj.factory('JournalPostgresResource', JournalPostgresResource);
+  inj.factory('JournalEntryPostgresResource', JournalEntryPostgresResource);
 
   return inj;
 }

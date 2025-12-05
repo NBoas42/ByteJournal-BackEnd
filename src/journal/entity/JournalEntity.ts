@@ -24,10 +24,10 @@ export class JournalEntity {
   @Column("uuid", { name: "account_id" })
   accountId!: string;
 
-  @Column("character varying", { name: "title" })
+  @Column("varchar", { name: "title" })
   title!: string;
 
-  @Column("character varying", { name: "description", nullable: true })
+  @Column("varchar", { name: "description", nullable: true })
   description?: string | null;
 
   @Column("timestamp without time zone", {

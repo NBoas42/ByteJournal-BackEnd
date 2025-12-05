@@ -1,11 +1,11 @@
-import { CreateJournalRequest } from '../dto/CreateJournalRequest';
-import { UpdateJournalRequest } from '../dto/UpdateJournalRequest';
-import { Journal } from '../dto/Journal';
+import { CreateJournalRequest } from '../dto/journal/CreateJournalRequest';
+import { UpdateJournalRequest } from '../dto/journal/UpdateJournalRequest';
+import { Journal } from '../dto/journal/Journal';
 
 import { JournalEntity } from '../entity/JournalEntity';
 
 import { DataSource, Repository } from 'typeorm';
-import { SearchJournalRequest } from '../dto/SearchJournalRequest';
+import { SearchJournalRequest } from '../dto/journal/SearchJournalRequest';
 
 export class JournalPostgresResource {
 

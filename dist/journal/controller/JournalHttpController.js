@@ -1,169 +1,135 @@
-import { Request } from "express";
-
-import { HTTPResponse } from "../../shared/http/types";
-
-import { SearchJournalRequest } from "../dto/journal/SearchJournalRequest";
-import { SearchJournalEntryRequest } from "../dto/journal-entry/SearchJournalEntryRequest";
-
-import { JournalPersistenceService } from '../service/JournalPersitenceService';
-import { JournalEntryPersistenceService } from "../service/JournalEntryPersitenceService";
-import { CreateJournalEntryRequest } from "../dto/journal-entry/CreateJournalEntryRequest";
-
-
-export class JournalHTTPController{
-
-    journalPersistenceService: JournalPersistenceService;
-    journalEntryPersistenceService: JournalEntryPersistenceService
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JournalHTTPController = void 0;
+class JournalHTTPController {
     static get inject() {
         return [
             'JournalPersistenceService',
             'JournalEntryPersistenceService'
         ];
     }
-
-    constructor( 
-        journalPersistenceService: JournalPersistenceService,
-        journalEntryPersistenceService: JournalEntryPersistenceService
-    ){
+    constructor(journalPersistenceService, journalEntryPersistenceService) {
         this.journalPersistenceService = journalPersistenceService;
         this.journalEntryPersistenceService = journalEntryPersistenceService;
     }
-
     // <---------Journal-------------->
     // TODO Add Validation to Request
     // TODO Add Journal Role Admin Access Only
-    async searchJournal (request: Request): Promise<HTTPResponse> {
-        const { accountId } =  request.query;
-        const searchRequest: SearchJournalRequest = {
-            accountId: accountId as string,
-        }
+    async searchJournal(request) {
+        const { accountId } = request.query;
+        const searchRequest = {
+            accountId: accountId,
+        };
         const journals = await this.journalPersistenceService.searchJournals(searchRequest);
         return {
             errors: [],
             status: 200,
             data: journals
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add Journal Role User Owner Or Admin Only
-    async getJournalById(request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
+    async getJournalById(request) {
+        const { params } = request;
         const journal = await this.journalPersistenceService.getJournalById(params.id);
         return {
             errors: [],
             status: 200,
             data: journal
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add Journal Role User Owner Or Admin Only
-    async createJournal (request: Request): Promise<HTTPResponse> {
+    async createJournal(request) {
         const { body: journalToCreate } = request;
         const createdJournal = await this.journalPersistenceService.createJournal(journalToCreate);
         return {
             errors: [],
             status: 200,
             data: createdJournal
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add Journal Role User Owner Or Admin Only
-    async updateJournalById (request: Request): Promise<HTTPResponse> {
+    async updateJournalById(request) {
         const { params, body } = request;
         const wasUpdated = await this.journalPersistenceService.updateJournalById(params.id, body);
         return {
             errors: [],
             status: 200,
             data: wasUpdated
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add Journal Role Admin Access Only
-    async deleteJournalById (request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
+    async deleteJournalById(request) {
+        const { params } = request;
         const wasDeleted = await this.journalPersistenceService.deleteJournalById(params.id);
         return {
             errors: [],
             status: 200,
             data: wasDeleted
-        }
+        };
     }
-
     // <---------Journal Entry-------------->
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
-    async getJournalEntryById(request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
+    async getJournalEntryById(request) {
+        const { params } = request;
         const journalEntry = await this.journalEntryPersistenceService.getJournalEntryById(params.id);
         return {
             errors: [],
             status: 200,
             data: journalEntry
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
-    async searchJournalEntry(request: Request): Promise<HTTPResponse> {
-        const { journalId, tags, title } =  request.query;
-        const searchRequest: SearchJournalEntryRequest = {
-            journalId: journalId as string,
-            title: title as string,
-        }
+    async searchJournalEntry(request) {
+        const { journalId, tags, title } = request.query;
+        const searchRequest = {
+            journalId: journalId,
+            title: title,
+        };
         const journalEntrys = await this.journalEntryPersistenceService.searchJournalEntries(searchRequest);
         return {
             errors: [],
             status: 200,
             data: journalEntrys
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
-    async createJournalEntry (request: Request): Promise<HTTPResponse> {
-        const { body, params } = request;
-        const journalEntryToCreate: CreateJournalEntryRequest = {
-            journalId: params.journalId,
-            title: body.title,
-            tags: body.tags,
-        };
-        console.log(journalEntryToCreate);
+    async createJournalEntry(request) {
+        const { body: journalEntryToCreate } = request;
         const createdJournalEntry = await this.journalEntryPersistenceService.createJournalEntry(journalEntryToCreate);
         return {
             errors: [],
             status: 200,
             data: createdJournalEntry
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
-    async updateJournalEntryById (request: Request): Promise<HTTPResponse> {
+    async updateJournalEntryById(request) {
         const { params, body } = request;
-        const wasUpdated = await this.journalEntryPersistenceService.updateJournalEntryById(params.journalEntryId, body);
+        const wasUpdated = await this.journalEntryPersistenceService.updateJournalEntryById(params.id, body);
         return {
             errors: [],
             status: 200,
             data: wasUpdated
-        }
+        };
     }
-
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
-    async deleteJournalEntryById (request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
-        const wasDeleted = await this.journalEntryPersistenceService.deleteJournalEntryById(params.journalEntryId);
+    async deleteJournalEntryById(request) {
+        const { params } = request;
+        const wasDeleted = await this.journalEntryPersistenceService.deleteJournalEntryById(params.id);
         return {
             errors: [],
             status: 200,
             data: wasDeleted
-        }
+        };
     }
-    
-
 }
+exports.JournalHTTPController = JournalHTTPController;

@@ -17,12 +17,11 @@ export class AccountPersistenceService {
             return this.accountPostgresResource.getAccountById(id);
         }
 
-        // TODO Add Specific DTO
+        // TODO Create a Default Journal 
         async createAccount (accountToCreate: Account): Promise<boolean> {
              return this.accountPostgresResource.createAccount(accountToCreate);
         }
         
-        // TODO Add Specific DTO
         async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
              return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
         }

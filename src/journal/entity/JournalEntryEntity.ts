@@ -26,8 +26,16 @@ export class JournalEntryEntity {
   @Column("uuid", { name: "journal_id" })
   journalId!: string;
 
-  @Column("character varying", { name: "tag", nullable: true })
-  tag?: string | null;
+  @Column("varchar", { name: "title" })
+  title!: string;
+
+  @Column("varchar", {
+    name: "tags",
+    array: true,
+    nullable: false,
+    default: () => "'{}'", // empty PG array literal
+  })
+  tags!: string[];
 
   @Column("timestamp without time zone", {
     name: "created_at",

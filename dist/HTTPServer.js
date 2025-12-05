@@ -9,12 +9,14 @@ const body_parser_1 = __importDefault(require("body-parser"));
 require("reflect-metadata");
 const AccountRoutes_1 = require("./account/http/AccountRoutes");
 const DependecyInjector_1 = require("./shared/dependency-injection/DependecyInjector");
+const JournalRoutes_1 = require("./journal/http/JournalRoutes");
 const bootstrap = async () => {
     const app = (0, express_1.default)();
-    const injector = await (0, DependecyInjector_1.getInjector)();
+    const injector = await (0, DependecyInjector_1.initInjector)();
     app.use((0, cors_1.default)());
     app.use(body_parser_1.default.json());
     (0, AccountRoutes_1.registerUserRoutes)(app, injector);
+    (0, JournalRoutes_1.registerJournalRoutes)(app, injector);
     app.listen(8000, () => console.log('running on port 8000'));
 };
 bootstrap();

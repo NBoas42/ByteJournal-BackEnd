@@ -31,9 +31,16 @@ __decorate([
     __metadata("design:type", String)
 ], JournalEntryEntity.prototype, "journalId", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", { name: "tag", nullable: true }),
-    __metadata("design:type", Object)
-], JournalEntryEntity.prototype, "tag", void 0);
+    (0, typeorm_1.Column)("character varying", { name: "title" }),
+    __metadata("design:type", String)
+], JournalEntryEntity.prototype, "title", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: "tags",
+        default: () => [],
+    }),
+    __metadata("design:type", Array)
+], JournalEntryEntity.prototype, "tags", void 0);
 __decorate([
     (0, typeorm_1.Column)("timestamp without time zone", {
         name: "created_at",
