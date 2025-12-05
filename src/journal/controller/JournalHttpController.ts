@@ -28,16 +28,15 @@ export class JournalHTTPController{
         }
     }
 
-    // TODO Add Validation to Request
-    // TODO Add Journal Role User Owner Or Admin Only
-    // TODO Return Created Journal
     async createJournal (request: Request): Promise<HTTPResponse> {
-        const { body } = request;// TODO Probably a better way to deal with this
-        const wasCreated = await this.journalPersistenceService.createJournal(body);
+        const { body: journalToCreate } = request;
+        // TODO Add Journal Role User Owner Or Admin Only
+        // TODO Add Validation to Request
+        const createdJournal = await this.journalPersistenceService.createJournal(journalToCreate);
         return {
             errors: [],
             status: 200,
-            data: wasCreated
+            data: createdJournal
         }
     }
 

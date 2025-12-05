@@ -30,7 +30,6 @@ export class JournalEntity {
   @Column("character varying", { name: "description", nullable: true })
   description?: string | null;
 
-
   @Column("timestamp without time zone", {
     name: "created_at",
     default: () => "CURRENT_TIMESTAMP",

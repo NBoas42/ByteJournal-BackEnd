@@ -13,17 +13,17 @@ export function registerJournalRoutes (app: Application, injector: Injector) {
     });
 
     app.post('/v0/journal', ( request, response ) => {
-        const controller: JournalHTTPController = injector.create('AccountHTTPController');
+        const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.createJournal.bind(controller))
     });
 
     app.patch('/v0/journal/:id', ( request, response ) => {
-        const controller: JournalHTTPController = injector.create('AccountHTTPController');
+        const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.updateJournalById.bind(controller))
     });
 
     app.delete('/v0/journal/:id', ( request, response ) => {
-        const controller: JournalHTTPController = injector.create('AccountHTTPController');
+        const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.deleteJournalById.bind(controller))
     });
     

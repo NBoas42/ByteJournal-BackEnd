@@ -1,5 +1,9 @@
+import { CreateJournalRequest } from '../dto/CreateJournalRequest';
+import { UpdateJournalRequest } from '../dto/UpdateJournalRequest';
 import { Journal } from '../dto/Journal';
+
 import { JournalEntity } from '../entity/JournalEntity';
+
 import { DataSource, Repository } from 'typeorm';
 
 export class JournalPostgresResource {
@@ -14,31 +18,25 @@ export class JournalPostgresResource {
             this.journalRepository = dbConnection.getRepository(JournalEntity);
         }
 
-        adaptEntityToJournalResponse(journalEntity:JournalEntity): Journal{
-            return journalEntity as Journal;
-        }
-      
         async getJournalById(id: string): Promise<Journal> {
             const journal = await this.journalRepository.findOne({ where:{ id } });
             if(!journal){
                 // TODO  Add Better Error Handling to add status
                 throw new Error('Not Found');
             }
-            return this.adaptEntityToJournalResponse(journal);
+            return journal as Journal;
         }
 
-        // TODO Add Specific DTO
-        // TODO Return Created Journal
-        async createJournal (journal: Journal): Promise<boolean> {
-            const result = await this.journalRepository.save(journal);
-            if(!result.id){
-                return false;
+        async createJournal (journal: CreateJournalRequest): Promise<Journal> {
+            const createdJournal = await this.journalRepository.save(journal);
+            if(!createdJournal.id){
+                throw new Error('Could Not Create Journal')
             }
-            return true;
+            return createdJournal as Journal;
         }
     
         // TODO Add Specific DTO
-        async updateJournalById (id: string, journalToUpdate: Journal): Promise<boolean> {
+        async updateJournalById (id: string, journalToUpdate: UpdateJournalRequest): Promise<boolean> {
             const result = await this.journalRepository.update({id}, journalToUpdate);
             return result.affected === 1 ? true:false;
 
