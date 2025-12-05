@@ -5,6 +5,7 @@ import { Journal } from '../dto/Journal';
 import { JournalEntity } from '../entity/JournalEntity';
 
 import { DataSource, Repository } from 'typeorm';
+import { SearchJournalRequest } from '../dto/SearchJournalRequest';
 
 export class JournalPostgresResource {
 
@@ -44,6 +45,14 @@ export class JournalPostgresResource {
         async deleteJournalById (id: string): Promise<boolean> {
             const result = await this.journalRepository.delete({ id })
             return result.affected === 1 ? true:false;
+        }
+
+        async searchJournals (searchRequest: SearchJournalRequest): Promise<Journal[]> {
+            const result = await this.journalRepository.find({
+                where: searchRequest
+            })
+            const journals = result.map(result => result as Journal) || [];
+            return journals;
         }
     
 }

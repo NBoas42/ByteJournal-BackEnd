@@ -1,6 +1,6 @@
-import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
 import { CreateJournalRequest } from '../dto/CreateJournalRequest';
 import { Journal } from '../dto/Journal';
+import { SearchJournalRequest } from '../dto/SearchJournalRequest';
 import { UpdateJournalRequest } from '../dto/UpdateJournalRequest';
 import { JournalPostgresResource } from '../resource/JournalPostgresResouce';
 
@@ -33,6 +33,10 @@ export class JournalPersistenceService {
     
         async deleteJournalById (id: string): Promise<boolean> {
              return this.journalPostgresResource.deleteJournalById(id);
+        }
+
+        async searchJournals (searchRequest: SearchJournalRequest): Promise<Journal[]> {
+            return this.journalPostgresResource.searchJournals(searchRequest);
         }
     
 }

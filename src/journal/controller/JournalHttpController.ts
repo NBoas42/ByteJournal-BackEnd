@@ -2,6 +2,7 @@ import { Request } from "express";
 
 import { JournalPersistenceService } from '../service/JournalPersitenceService';
 import { HTTPResponse } from "../../shared/http/types";
+import { SearchJournalRequest } from "../dto/SearchJournalRequest";
 
 
 export class JournalHTTPController{
@@ -61,6 +62,19 @@ export class JournalHTTPController{
             errors: [],
             status: 200,
             data: wasDeleted
+        }
+    }
+
+    async searchJournal (request: Request): Promise<HTTPResponse> {
+        const { accountId } =  request.query;
+        const searchRequest: SearchJournalRequest = {
+            accountId: accountId as string,
+        }
+        const journals = await this.journalPersistenceService.searchJournals(searchRequest);
+        return {
+            errors: [],
+            status: 200,
+            data: journals
         }
     }
 

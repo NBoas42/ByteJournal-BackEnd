@@ -7,6 +7,11 @@ import { Injector } from 'boxed-injector';
 
 export function registerJournalRoutes (app: Application, injector: Injector) {
 
+    app.get('/v0/journal', ( request, response) => {
+        const controller: JournalHTTPController = injector.create('JournalHTTPController');
+        return expressRequestHandler(request, response, controller.searchJournal.bind(controller))
+    });
+
     app.get('/v0/journal/:id', ( request, response) => {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.getJournalById.bind(controller))
@@ -26,6 +31,7 @@ export function registerJournalRoutes (app: Application, injector: Injector) {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.deleteJournalById.bind(controller))
     });
+    
     
 }
 
