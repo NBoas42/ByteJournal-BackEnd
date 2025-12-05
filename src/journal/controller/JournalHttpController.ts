@@ -43,22 +43,20 @@ export class JournalHTTPController{
     // TODO Add Validation to Request
     // TODO Add Journal Role User Owner Or Admin Only
     async updateJournalById (request: Request): Promise<HTTPResponse> {
-        const { params, body } = request;// TODO Probably a better way to deal with this
-        const updatedJournal = await this.journalPersistenceService.updateJournalById(params.id, body);
+        const { params, body } = request;
+        const wasUpdated = await this.journalPersistenceService.updateJournalById(params.id, body);
         return {
             errors: [],
             status: 200,
-            data: updatedJournal
+            data: wasUpdated
         }
     }
 
     // TODO Add Validation to Request
     // TODO Add Journal Role Admin Access Only
-    // TODO Add soft delete
     async deleteJournalById (request: Request): Promise<HTTPResponse> {
         const { params } =  request;
         const wasDeleted = await this.journalPersistenceService.deleteJournalById(params.id);
-        
         return {
             errors: [],
             status: 200,

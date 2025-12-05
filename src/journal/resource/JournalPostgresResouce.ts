@@ -35,7 +35,6 @@ export class JournalPostgresResource {
             return createdJournal as Journal;
         }
     
-        // TODO Add Specific DTO
         async updateJournalById (id: string, journalToUpdate: UpdateJournalRequest): Promise<boolean> {
             const result = await this.journalRepository.update({id}, journalToUpdate);
             return result.affected === 1 ? true:false;

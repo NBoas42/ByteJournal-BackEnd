@@ -1,3 +1,4 @@
+import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
 import { CreateJournalRequest } from '../dto/CreateJournalRequest';
 import { Journal } from '../dto/Journal';
 import { UpdateJournalRequest } from '../dto/UpdateJournalRequest';
@@ -8,10 +9,13 @@ export class JournalPersistenceService {
         journalPostgresResource: JournalPostgresResource;
 
         static get inject() {
-            return ['JournalPostgresResource'];
+            return [
+                'JournalPostgresResource',
+                'AccountPostgresResource'
+            ];
         }
 
-        constructor( journalPostgresResource: JournalPostgresResource){
+        constructor( journalPostgresResource: JournalPostgresResource ){
             this.journalPostgresResource = journalPostgresResource;
         }
       
@@ -20,11 +24,9 @@ export class JournalPersistenceService {
         }
 
         async createJournal (journalToCreate: CreateJournalRequest): Promise<Journal> {
-            // Check if Account Exists
-             return this.journalPostgresResource.createJournal(journalToCreate);
+            return this.journalPostgresResource.createJournal(journalToCreate);
         }
         
-        // TODO Add Specific DTO
         async updateJournalById (id: string, journalToUpdate: UpdateJournalRequest): Promise<boolean> {
              return this.journalPostgresResource.updateJournalById(id, journalToUpdate);
         }
