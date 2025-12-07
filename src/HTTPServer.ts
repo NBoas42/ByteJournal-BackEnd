@@ -16,9 +16,8 @@ const bootstrap = async () =>{
     app.use( cors() );
     app.use( bodyParser.json() );
 
-
-    registerAuthRoutes( app, injector )
-    registerAccountRoutes( app, injector ) ;
+    registerAccountRoutes( app, injector );
+    registerAuthRoutes( app, injector );
     registerJournalRoutes( app, injector );
 
     app.listen(8000, () => console.log('running on port 8000'));
