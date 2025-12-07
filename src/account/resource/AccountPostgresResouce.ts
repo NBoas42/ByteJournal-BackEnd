@@ -13,19 +13,24 @@ export class AccountPostgresResource {
         constructor( dbConnection: DataSource){
             this.accountRepository = dbConnection.getRepository(AccountEntity);
         }
-
-        adaptEntityToAccountResponse(accountEntity:AccountEntity): Account{
-            return accountEntity as Account;
-        }
       
         async getAccountById(id: string): Promise<Account> {
             const account = await this.accountRepository.findOne({ where:{ id } });
             if(!account){
-                // TODO  Add Better Error Handling to add status
                 throw new Error('Not Found');
             }
-            return this.adaptEntityToAccountResponse(account);
+            return account as Account;
         }
+
+
+        async getAccountByEmail(email: string): Promise<Account> {
+            const account = await this.accountRepository.findOne({ where:{ email } });
+            if(!account){
+                throw new Error('Not Found');
+            }
+            return account as Account;
+        }
+
 
         // TODO Add Specific DTO
         async createAccount (account: Account): Promise<boolean> {

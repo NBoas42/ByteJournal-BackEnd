@@ -17,7 +17,7 @@ export function registerJournalRoutes (app: Application, injector: Injector) {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.getJournalById.bind(controller))
     });
-
+    
     app.post('/v0/journal', ( request, response ) => {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.createJournal.bind(controller))

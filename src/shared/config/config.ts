@@ -1,5 +1,6 @@
 
 export interface ApplicationConfig {
+    auth: AuthConfig,
     database:DatabaseConfig
 }
 
@@ -12,3 +13,8 @@ interface DatabaseConfig {
     type: dbType;
 }
 type dbType = "mysql"| "postgres"| "sqlite";
+
+interface AuthConfig {
+    saltRounds: number;
+    jwtSecret: string;
+}

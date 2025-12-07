@@ -2,6 +2,9 @@ import { Injector } from 'boxed-injector';
 
 import { createDataDBConnection } from '../database/DBConnector';
 
+import { AuthHTTPController } from '../../auth/controller/AuthHttpController';
+import { AuthService } from '../../auth/service/AuthService';
+
 import { AccountHTTPController } from '../../account/controller/AccountHTTPController';
 import { AccountPersistenceService } from '../../account/service/AccountPersitenceService';
 import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
@@ -24,6 +27,10 @@ async function buildInjector(): Promise<Injector> {
   const dbConnection = await createDataDBConnection();
   inj.register('DBConnection', dbConnection)
 
+  // Init Auth Module
+  inj.factory('AuthHTTPController', AuthHTTPController);
+
+  inj.factory('AuthService', AuthService);
 
   // Init Account Module
   inj.factory('AccountHTTPController', AccountHTTPController);
