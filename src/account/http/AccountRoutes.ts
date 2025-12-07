@@ -5,7 +5,7 @@ import { AccountHTTPController } from '../controller/AccountHTTPController';
 import { Injector } from 'boxed-injector';
 
 
-export function registerUserRoutes (app: Application, injector: Injector) {
+export function registerAccountRoutes (app: Application, injector: Injector) {
 
     app.get('/v0/account/:id', ( request, response) => {
         const controller: AccountHTTPController = injector.create('AccountHTTPController');
