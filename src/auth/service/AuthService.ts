@@ -22,9 +22,14 @@ export class AuthService {
             this.config = config as ApplicationConfig;
         }
 
-    async authenticateJWT(): Promise<boolean> {
-        return true;
-    }
+async authenticateJWTToken(token: string): Promise<{ id: string }> {
+  const decoded = jwt.verify(token, this.config.auth.jwtSecret) as { id: string };
+  const account = await this.accountPostgresResource.getAccountById(decoded.id);
+  if (!account) {
+    throw new Error('Invalid token');
+  }
+  return { id: account.id };
+}
 
     async hashPassword (password: string): Promise<string> {
         return bcrypt.hash(password, this.config.auth.saltRounds);

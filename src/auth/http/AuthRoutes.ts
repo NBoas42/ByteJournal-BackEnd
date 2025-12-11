@@ -7,7 +7,7 @@ import { Injector } from 'boxed-injector';
 
 export function registerAuthRoutes (app: Application, injector: Injector) {
 
-    app.post('/v0/login', ( request, response) => {
+    app.post('/v0/auth/login', ( request, response) => {
         const controller: AuthHTTPController = injector.create('AuthHTTPController');
         return expressRequestHandler(request, response, controller.login.bind(controller))
     });
