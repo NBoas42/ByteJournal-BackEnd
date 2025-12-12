@@ -1,29 +1,26 @@
-import { Request, Response, NextFunction } from 'express';
-import { Injector } from 'boxed-injector';
-import { AuthService } from '../../auth/service/AuthService';
+import { Request, Response, NextFunction } from "express";
+import { Injector } from "boxed-injector";
+import { AuthService } from "../../auth/service/AuthService";
 
 export function authMiddleware(injector: Injector) {
-    return async function authMiddleware(req: Request & { userId?: string }, res: Response, next: NextFunction) {
-        try {
-            const authHeader = req.headers['authorization'];
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const authHeader = req.headers.authorization;
 
-            if (!authHeader || !authHeader.startsWith('Bearer ')) {
-                return res.status(403).json({ error: 'Not Authrorized' });
-            }
+      if (!authHeader?.startsWith("Bearer ")) {
+        return res.status(403).json({ error: "Not Authorized" });
+      }
 
-            const token = authHeader.substring('Bearer '.length).trim();
+      const token = authHeader.slice("Bearer ".length).trim();
+      const authService: AuthService = injector.create("AuthService");
 
-            // get an AuthService instance from your DI container
-            const authService: AuthService = injector.create('AuthService');
+      const payload = await authService.authenticateJWTToken(token);
 
-            const payload = await authService.authenticateJWTToken(token);
+      req.body.requestingAccount = payload;
 
-            // attach user info for downstream handlers/controllers
-            req.userId = payload.id;
-
-            return next();
-        } catch (err) {
-            return res.status(403).json({ error: 'Not Authorized' });
-        }
-    };
+      return next();
+    } catch {
+      return res.status(403).json({ error: "Not Authorized" });
+    }
+  };
 }
