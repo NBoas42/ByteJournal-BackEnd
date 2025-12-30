@@ -3,6 +3,8 @@ import { JournalEntryEntity } from "./JournalEntryEntity";
 
 @Index("review_pkey", ["id"], { unique: true })
 @Index("review_journal_entry_id_key", ["journalEntryId"], { unique: true })
+@Index("idx_review_account", ["accountId"], {})
+@Index("idx_review_account_entry", ["accountId", "journalEntryId"], {})
 @Entity("review", { schema: "public" })
 export class ReviewEntity {
   @Column("uuid", {
@@ -15,6 +17,9 @@ export class ReviewEntity {
   @Column("uuid", { name: "journal_entry_id", unique: true })
   journalEntryId!: string;
 
+  @Column("uuid", { name: "account_id" })
+  accountId!: string;
+
   @Column("text", { name: "content" })
   content!: string;
 
@@ -25,17 +30,20 @@ export class ReviewEntity {
     name: "created_at",
     default: () => "CURRENT_TIMESTAMP",
   })
-  createdAt!: Date;
+  createdAt?: Date;
 
   @Column("timestamp without time zone", {
     name: "updated_at",
     default: () => "CURRENT_TIMESTAMP",
   })
-  updatedAt!: Date;
+  updatedAt?: Date;
 
   @OneToOne(() => JournalEntryEntity, (journalEntry) => journalEntry.review, {
     onDelete: "CASCADE",
   })
-  @JoinColumn([{ name: "journal_entry_id", referencedColumnName: "id" }])
+  @JoinColumn([
+    { name: "journal_entry_id", referencedColumnName: "id" },
+    { name: "account_id", referencedColumnName: "accountId" }, 
+  ])
   journalEntry?: JournalEntryEntity;
 }

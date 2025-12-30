@@ -3,6 +3,8 @@ import { JournalEntryEntity } from "./JournalEntryEntity";
 
 @Index("task_pkey", ["id"], { unique: true })
 @Index("idx_task_entry", ["journalEntryId"], {})
+@Index("idx_task_account", ["accountId"], {})
+@Index("idx_task_account_entry", ["accountId", "journalEntryId"], {})
 @Entity("task", { schema: "public" })
 export class TaskEntity {
   @Column("uuid", {
@@ -15,15 +17,19 @@ export class TaskEntity {
   @Column("uuid", { name: "journal_entry_id" })
   journalEntryId!: string;
 
+  @Column("uuid", { name: "account_id" })
+  accountId!: string;
+
   @Column("character varying", { name: "title" })
   title!: string;
 
+  // nullable: true => should be optional in TS too
   @Column("text", { name: "description", nullable: true })
-  description!: string | null;
+  description?: string | null;
 
   @Column("enum", {
     name: "status",
-    enum: ["NOT_STARTED", "STARTED", "COMPLETED"], // TO DO Add Typing Here
+    enum: ["NOT_STARTED", "STARTED", "COMPLETED"],
   })
   status!: "NOT_STARTED" | "STARTED" | "COMPLETED";
 
@@ -48,6 +54,9 @@ export class TaskEntity {
   @ManyToOne(() => JournalEntryEntity, (journalEntry) => journalEntry.tasks, {
     onDelete: "CASCADE",
   })
-  @JoinColumn([{ name: "journal_entry_id", referencedColumnName: "id" }])
+  @JoinColumn([
+    { name: "journal_entry_id", referencedColumnName: "id" },
+    { name: "account_id", referencedColumnName: "accountId" }, 
+  ])
   journalEntry!: JournalEntryEntity;
 }

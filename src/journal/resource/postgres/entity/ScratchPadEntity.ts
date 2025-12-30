@@ -3,6 +3,8 @@ import { JournalEntity } from "./JournalEntity";
 
 @Index("scratch_pad_pkey", ["id"], { unique: true })
 @Index("idx_sp_journal", ["journalId"], {})
+@Index("idx_sp_account", ["accountId"], {})
+@Index("idx_sp_account_journal", ["accountId", "journalId"], {})
 @Entity("scratch_pad", { schema: "public" })
 export class ScratchPadEntity {
   @Column("uuid", {
@@ -14,6 +16,9 @@ export class ScratchPadEntity {
 
   @Column("uuid", { name: "journal_id" })
   journalId!: string;
+
+  @Column("uuid", { name: "account_id" })
+  accountId!: string;
 
   @Column("character varying", { name: "title" })
   title!: string;
@@ -36,6 +41,9 @@ export class ScratchPadEntity {
   @ManyToOne(() => JournalEntity, (journal) => journal.scratchPads, {
     onDelete: "CASCADE",
   })
-  @JoinColumn([{ name: "journal_id", referencedColumnName: "id" }])
+  @JoinColumn([
+    { name: "journal_id", referencedColumnName: "id" },
+    { name: "account_id", referencedColumnName: "accountId" }, 
+  ])
   journal?: JournalEntity;
 }

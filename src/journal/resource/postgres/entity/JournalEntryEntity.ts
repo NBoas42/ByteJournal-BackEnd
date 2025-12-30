@@ -8,12 +8,14 @@ import {
   OneToOne,
 } from "typeorm";
 import { JournalEntity } from "./JournalEntity";
-import { NoteEntity  } from "./NoteEntity";
-import { ReviewEntity  } from "./ReviewEntity";
-import { TaskEntity  } from "./TaskEntity";
+import { NoteEntity } from "./NoteEntity";
+import { ReviewEntity } from "./ReviewEntity";
+import { TaskEntity } from "./TaskEntity";
 
 @Index("journal_entry_pkey", ["id"], { unique: true })
 @Index("idx_entry_journal", ["journalId"], {})
+@Index("idx_entry_account", ["accountId"], {})
+@Index("idx_entry_account_journal", ["accountId", "journalId"], {})
 @Entity("journal_entry", { schema: "public" })
 export class JournalEntryEntity {
   @Column("uuid", {
@@ -26,6 +28,9 @@ export class JournalEntryEntity {
   @Column("uuid", { name: "journal_id" })
   journalId!: string;
 
+  @Column("uuid", { name: "account_id" })
+  accountId!: string;
+
   @Column("varchar", { name: "title" })
   title!: string;
 
@@ -33,7 +38,7 @@ export class JournalEntryEntity {
     name: "tags",
     array: true,
     nullable: false,
-    default: () => "'{}'", // empty PG array literal
+    default: () => "'{}'",
   })
   tags!: string[];
 
@@ -52,7 +57,10 @@ export class JournalEntryEntity {
   @ManyToOne(() => JournalEntity, (journal) => journal.journalEntries, {
     onDelete: "CASCADE",
   })
-  @JoinColumn([{ name: "journal_id", referencedColumnName: "id" }])
+  @JoinColumn([
+    { name: "journal_id", referencedColumnName: "id" },
+    { name: "account_id", referencedColumnName: "accountId" }, 
+  ])
   journal?: JournalEntity;
 
   @OneToMany(() => NoteEntity, (note) => note.journalEntry)

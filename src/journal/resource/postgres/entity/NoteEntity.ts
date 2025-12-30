@@ -3,6 +3,8 @@ import { JournalEntryEntity } from "./JournalEntryEntity";
 
 @Index("note_pkey", ["id"], { unique: true })
 @Index("idx_note_entry", ["journalEntryId"], {})
+@Index("idx_note_account", ["accountId"], {})
+@Index("idx_note_account_entry", ["accountId", "journalEntryId"], {})
 @Entity("note", { schema: "public" })
 export class NoteEntity {
   @Column("uuid", {
@@ -14,6 +16,9 @@ export class NoteEntity {
 
   @Column("uuid", { name: "journal_entry_id" })
   journalEntryId!: string;
+
+  @Column("uuid", { name: "account_id" })
+  accountId!: string;
 
   @Column("text", { name: "content" })
   content!: string;
@@ -33,6 +38,9 @@ export class NoteEntity {
   @ManyToOne(() => JournalEntryEntity, (journalEntry) => journalEntry.notes, {
     onDelete: "CASCADE",
   })
-  @JoinColumn([{ name: "journal_entry_id", referencedColumnName: "id" }])
+  @JoinColumn([
+    { name: "journal_entry_id", referencedColumnName: "id" },
+    { name: "account_id", referencedColumnName: "accountId" }, 
+  ])
   journalEntry?: JournalEntryEntity;
 }

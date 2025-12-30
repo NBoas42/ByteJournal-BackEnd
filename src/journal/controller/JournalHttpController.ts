@@ -13,7 +13,7 @@ import { UpdateJournalEntryRequest } from "../types/journal-entry/UpdateJournalE
 import { HTTPController } from "../../shared/controller/HttpController";
 
 
-export class JournalHTTPController extends HTTPController{
+export class JournalHTTPController {
 
     journalPersistenceService: JournalPersistenceService;
     journalEntryPersistenceService: JournalEntryPersistenceService
@@ -29,7 +29,6 @@ export class JournalHTTPController extends HTTPController{
         journalPersistenceService: JournalPersistenceService,
         journalEntryPersistenceService: JournalEntryPersistenceService
     ){
-        super();
         this.journalPersistenceService = journalPersistenceService;
         this.journalEntryPersistenceService = journalEntryPersistenceService;
     }
@@ -37,9 +36,9 @@ export class JournalHTTPController extends HTTPController{
     // <---------Journal-------------->
     // TODO Add Validation to Request
     async searchJournal (request: Request): Promise<HTTPResponse> {
-        const { accountId } =  this.parseQueryObject(request.query);
         const { requestingAccount } = request.body;
-        const journals = await this.journalPersistenceService.searchJournals({ accountId });
+        const searchJournalRequest =  request.query as SearchJournalRequest;
+        const journals = await this.journalPersistenceService.searchJournals(searchJournalRequest);
         return {
             errors: [],
             status: 200,
@@ -114,13 +113,10 @@ export class JournalHTTPController extends HTTPController{
     // TODO Add Validation to Request
     // TODO Add User Owner Or Admin Only role authentication
     async searchJournalEntry(request: Request): Promise<HTTPResponse> {
-        const { journalId, tags, title } =  request.query;
         const { requestingAccount } = request.body;
-        const searchRequest: SearchJournalEntryRequest = {
-            journalId: journalId as string,
-            title: title as string,
-        }
-        const journalEntrys = await this.journalEntryPersistenceService.searchJournalEntries(searchRequest);
+        const searchJournalEntryRequest =  request.query as SearchJournalEntryRequest;
+
+        const journalEntrys = await this.journalEntryPersistenceService.searchJournalEntries(searchJournalEntryRequest);
         return {
             errors: [],
             status: 200,
@@ -171,3 +167,4 @@ export class JournalHTTPController extends HTTPController{
     
 
 }
+

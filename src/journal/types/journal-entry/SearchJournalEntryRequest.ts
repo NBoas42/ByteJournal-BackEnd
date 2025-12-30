@@ -1,4 +1,4 @@
 export interface SearchJournalEntryRequest {
-    journalId:string;
+    journalId?:string;
     title?: string;
 }
