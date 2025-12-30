@@ -1,11 +1,11 @@
 import { DataSource, Repository } from 'typeorm';
 
-import { JournalEntryEntity } from '../entity/JournalEntryEntity';
+import { JournalEntryEntity } from '../postgres/entity/JournalEntryEntity';
 
-import { JournalEntry } from '../dto/journal-entry/JournalEntry';
-import { SearchJournalEntryRequest } from '../dto/journal-entry/SearchJournalEntryRequest';
-import { CreateJournalEntryRequest } from '../dto/journal-entry/CreateJournalEntryRequest';
-import { UpdateJournalEntryRequest } from '../dto/journal-entry/UpdateJournalEntryRequest';
+import { JournalEntry } from '../../types/journal-entry/JournalEntry';
+import { SearchJournalEntryRequest } from '../../types/journal-entry/SearchJournalEntryRequest';
+import { CreateJournalEntryRequest } from '../../types/journal-entry/CreateJournalEntryRequest';
+import { UpdateJournalEntryRequest } from '../../types/journal-entry/UpdateJournalEntryRequest';
 
 export class JournalEntryPostgresResource {
 

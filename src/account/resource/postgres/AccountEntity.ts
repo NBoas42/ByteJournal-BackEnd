@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { JournalEntity } from "../../journal/entity/JournalEntity";
+import { JournalEntity } from "../../../journal/resource/postgres/entity/JournalEntity";
 
 @Index("account_email_key", ["email"], { unique: true })
 @Index("account_pkey", ["id"], { unique: true })

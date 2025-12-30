@@ -1,11 +1,11 @@
-import { CreateJournalRequest } from '../dto/journal/CreateJournalRequest';
-import { UpdateJournalRequest } from '../dto/journal/UpdateJournalRequest';
-import { Journal } from '../dto/journal/Journal';
+import { CreateJournalRequest } from '../../types/journal/CreateJournalRequest';
+import { UpdateJournalRequest } from '../../types/journal/UpdateJournalRequest';
+import { Journal } from '../../types/journal/Journal';
 
-import { JournalEntity } from '../entity/JournalEntity';
+import { JournalEntity } from '../postgres/entity/JournalEntity';
 
 import { DataSource, Repository } from 'typeorm';
-import { SearchJournalRequest } from '../dto/journal/SearchJournalRequest';
+import { SearchJournalRequest } from '../../types/journal/SearchJournalRequest';
 
 export class JournalPostgresResource {
 
@@ -19,7 +19,7 @@ export class JournalPostgresResource {
             this.journalRepository = dbConnection.getRepository(JournalEntity);
         }
 
-        async getJournalById(id: string): Promise<Journal> {
+        async getJournalById(id: string, ): Promise<Journal> {
             const journal = await this.journalRepository.findOne({ where:{ id } });
             if(!journal){
                 // TODO  Add Better Error Handling to add status

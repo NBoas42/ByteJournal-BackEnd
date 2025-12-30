@@ -1,5 +1,5 @@
-import { Account } from '../dto/Account';
-import { AccountEntity } from '../entity/AccountEntity';
+import { Account } from '../../types/Account';
+import { AccountEntity } from './AccountEntity';
 import { DataSource, Repository } from 'typeorm';
 
 export class AccountPostgresResource {

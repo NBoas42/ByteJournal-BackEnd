@@ -7,15 +7,15 @@ import { AuthService } from '../../auth/service/AuthService';
 
 import { AccountHTTPController } from '../../account/controller/AccountHTTPController';
 import { AccountPersistenceService } from '../../account/service/AccountPersitenceService';
-import { AccountPostgresResource } from '../../account/resource/AccountPostgresResouce';
+import { AccountPostgresResource } from '../../account/resource/postgres/AccountPostgresResouce';
 
 import { JournalHTTPController } from '../../journal/controller/JournalHttpController';
 
 import { JournalPersistenceService } from '../../journal/service/JournalPersitenceService';
 import { JournalEntryPersistenceService } from '../../journal/service/JournalEntryPersitenceService';
 
-import { JournalPostgresResource } from '../../journal/resource/JournalPostgresResouce';
-import { JournalEntryPostgresResource } from '../../journal/resource/JournalEntryPostgresResource';
+import { JournalPostgresResource } from '../../journal/resource/postgres/JournalPostgresResouce';
+import { JournalEntryPostgresResource } from '../../journal/resource/postgres/JournalEntryPostgresResource';
 
 
 let injector: Injector | undefined;

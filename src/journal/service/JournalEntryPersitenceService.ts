@@ -1,10 +1,10 @@
-import { JournalEntry } from '../dto/journal-entry/JournalEntry';
+import { JournalEntry } from '../types/journal-entry/JournalEntry';
 
-import { CreateJournalEntryRequest } from '../dto/journal-entry/CreateJournalEntryRequest';
-import { SearchJournalEntryRequest } from '../dto/journal-entry/SearchJournalEntryRequest';
-import { UpdateJournalEntryRequest } from '../dto/journal-entry/UpdateJournalEntryRequest';
+import { CreateJournalEntryRequest } from '../types/journal-entry/CreateJournalEntryRequest';
+import { SearchJournalEntryRequest } from '../types/journal-entry/SearchJournalEntryRequest';
+import { UpdateJournalEntryRequest } from '../types/journal-entry/UpdateJournalEntryRequest';
 
-import { JournalEntryPostgresResource } from '../resource/JournalEntryPostgresResource';
+import { JournalEntryPostgresResource } from '../resource/postgres/JournalEntryPostgresResource';
 
 export class JournalEntryPersistenceService {
 

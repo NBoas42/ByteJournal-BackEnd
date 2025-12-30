@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { ApplicationConfig } from "../../shared/config/config";
-import { AccountPostgresResource } from "../../account/resource/AccountPostgresResouce";
+import { AccountPostgresResource } from "../../account/resource/postgres/AccountPostgresResouce";
 import config from '../../shared/config/config.json';
 
 

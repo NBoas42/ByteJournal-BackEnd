@@ -6,7 +6,7 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { AccountEntity } from "../../account/entity/AccountEntity";
+import { AccountEntity } from "../../../../account/resource/postgres/AccountEntity";
 import { JournalEntryEntity } from "./JournalEntryEntity";
 import { ScratchPadEntity } from "./ScratchPadEntity";
 

@@ -1,9 +1,9 @@
-import { Journal } from '../dto/journal/Journal';
-import { SearchJournalRequest } from '../dto/journal/SearchJournalRequest';
-import { CreateJournalRequest } from '../dto/journal/CreateJournalRequest';
-import { UpdateJournalRequest } from '../dto/journal/UpdateJournalRequest';
+import { Journal } from '../types/journal/Journal';
+import { SearchJournalRequest } from '../types/journal/SearchJournalRequest';
+import { CreateJournalRequest } from '../types/journal/CreateJournalRequest';
+import { UpdateJournalRequest } from '../types/journal/UpdateJournalRequest';
 
-import { JournalPostgresResource } from '../resource/JournalPostgresResouce';
+import { JournalPostgresResource } from '../resource/postgres/JournalPostgresResouce';
 
 export class JournalPersistenceService {
 

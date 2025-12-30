@@ -1,6 +1,6 @@
 import { AuthService } from '../../auth/service/AuthService';
-import { Account } from '../dto/Account';
-import { AccountPostgresResource } from '../resource/AccountPostgresResouce';
+import { Account } from '../types/Account';
+import { AccountPostgresResource } from '../resource/postgres/AccountPostgresResouce';
 
 export class AccountPersistenceService {
 
