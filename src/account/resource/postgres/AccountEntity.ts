@@ -1,5 +1,6 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { JournalEntity } from "../../../journal/resource/postgres/entity/JournalEntity";
+import { PERMISSIONS_TYPES, PermissionType } from "../../../shared/types/PermissionType";
 
 @Index("account_email_key", ["email"], { unique: true })
 @Index("account_pkey", ["id"], { unique: true })
@@ -21,8 +22,8 @@ export class AccountEntity {
   @Column("character varying", { name: "password" })
   password!: string;
 
-  @Column("enum", { name: "permission_type", enum: ["ADMIN", "USER"] })
-  permissionType!: "ADMIN" | "USER";
+  @Column("enum", { name: "permission_type", enum: PERMISSIONS_TYPES})
+  permissionType!: PermissionType;
 
   @Column("character varying", { name: "picture", nullable: true })
   picture?: string | null;

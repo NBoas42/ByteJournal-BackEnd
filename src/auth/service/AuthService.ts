@@ -32,7 +32,7 @@ export class AuthService {
     }
     return { 
         id: account.id,
-        role: 'USER'
+        permissionType: account.permissionType
     };
     }
 

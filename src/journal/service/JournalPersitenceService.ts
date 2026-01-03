@@ -24,7 +24,7 @@ export class JournalPersistenceService {
         async getJournalById(id: string, requestingAccount: RequestingAccountContext): Promise<Journal> {
             const journal = await this.journalPostgresResource.getJournalById(id);
             const isOwner = journal.accountId === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
@@ -40,7 +40,7 @@ export class JournalPersistenceService {
         async updateJournalById (id: string, journalToUpdate: UpdateJournalRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
             const journal = await this.journalPostgresResource.getJournalById(id);
             const isOwner = journal.accountId === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
@@ -52,7 +52,7 @@ export class JournalPersistenceService {
         async deleteJournalById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
             const journal = await this.journalPostgresResource.getJournalById(id);
             const isOwner = journal.accountId === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
@@ -62,7 +62,7 @@ export class JournalPersistenceService {
         }
 
         async searchJournals (searchRequest: SearchJournalRequest, requestingAccount: RequestingAccountContext): Promise<Journal[]> {
-            if(requestingAccount.role === "ADMIN"){
+            if(requestingAccount.permissionType === "ADMIN"){
                 return this.journalPostgresResource.searchJournals(searchRequest);
             }
 

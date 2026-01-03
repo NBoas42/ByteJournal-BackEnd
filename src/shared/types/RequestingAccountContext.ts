@@ -1,6 +1,6 @@
-import { Role } from "./Role";
+import { PermissionType } from "./PermissionType";
 
 export interface RequestingAccountContext {
     id: string,
-    role: Role,
+    permissionType: PermissionType,
 }

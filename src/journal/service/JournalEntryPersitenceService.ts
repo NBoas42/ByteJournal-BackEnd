@@ -24,7 +24,7 @@ export class JournalEntryPersistenceService {
         async getJournalEntryById(id: string, requestingAccount: RequestingAccountContext): Promise<JournalEntry> {
         const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
-        const isAdmin = requestingAccount.role === "ADMIN";
+        const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
             throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
         }
@@ -39,7 +39,7 @@ export class JournalEntryPersistenceService {
         async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
         const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
-        const isAdmin = requestingAccount.role === "ADMIN";
+        const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
             throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
         }            
@@ -49,7 +49,7 @@ export class JournalEntryPersistenceService {
         async deleteJournalEntryById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
         const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
-        const isAdmin = requestingAccount.role === "ADMIN";
+        const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
             throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
         }
@@ -60,7 +60,7 @@ export class JournalEntryPersistenceService {
         // TODO Need to make it so that the title is regex if possible
         // TODO Add Pagination
         async searchJournalEntries (searchRequest: SearchJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntry[]> {
-            if(requestingAccount.role === "ADMIN"){
+            if(requestingAccount.permissionType === "ADMIN"){
                  return this.journalEntryPostgresResource.searchJournalEntries(searchRequest);
             }
             return this.journalEntryPostgresResource.searchJournalEntries({

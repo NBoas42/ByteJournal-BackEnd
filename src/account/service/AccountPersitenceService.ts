@@ -23,8 +23,8 @@ export class AccountPersistenceService {
         async getAccountById(id: string, requestingAccount: RequestingAccountContext): Promise<Account> {
             const account = await this.accountPostgresResource.getAccountById(id);
             const isOwner = account.id === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
-            
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
+
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
             }
@@ -41,7 +41,7 @@ export class AccountPersistenceService {
         async updateAccountById (id: string, accountToUpdate: Account, requestingAccount: RequestingAccountContext): Promise<boolean> {
             const account = await this.accountPostgresResource.getAccountById(id);
             const isOwner = account.id === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
@@ -53,7 +53,7 @@ export class AccountPersistenceService {
         async deleteAccountById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
             const account = await this.accountPostgresResource.getAccountById(id);
             const isOwner = account.id === requestingAccount.id;
-            const isAdmin = requestingAccount.role === "ADMIN";
+            const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
                 throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
