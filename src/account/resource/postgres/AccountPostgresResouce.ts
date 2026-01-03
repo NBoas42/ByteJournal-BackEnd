@@ -49,7 +49,7 @@ export class AccountPostgresResource {
         }
     
         async deleteAccountById (id: string): Promise<boolean> {
-            const result = await this.accountRepository.delete({ id })
+            const result = await this.accountRepository.delete({ id }); // TODO Add soft delete
             return result.affected === 1 ? true:false;
         }
     

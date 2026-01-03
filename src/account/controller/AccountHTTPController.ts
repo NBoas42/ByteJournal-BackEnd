@@ -16,7 +16,6 @@ export class AccountHTTPController {
         this.accountPersistenceService = accountPersistenceService;
     }
 
-    // TODO Add Validation to Request
     async getAccountById(request: Request): Promise<HTTPResponse> {
         const params = request.params;
         const requestingAccount = request.requestingAccount;
@@ -28,11 +27,9 @@ export class AccountHTTPController {
         }
     }
 
-    // TODO Add Validation to Request
-    // TODO Add Account Role Admin Access Only
     async createAccount (request: Request): Promise<HTTPResponse> {
-        const { body } = request;// TODO Probably a better way to deal with this
-        const wasCreated = await this.accountPersistenceService.createAccount(body);
+        const accountToCreate = request.body;// TODO Validate With Safe Parse Zod
+        const wasCreated = await this.accountPersistenceService.createAccount(accountToCreate);
         return {
             errors: [],
             status: 200,
@@ -43,7 +40,7 @@ export class AccountHTTPController {
     async updateAccountById (request: Request): Promise<HTTPResponse> {
         const params = request.params;
         const accountToUpdate = request.body;
-        const requestingAccount = request.requestingAccount;
+        const requestingAccount = request.requestingAccount;// TODO Validate With Safe Parse Zod
         const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, accountToUpdate, requestingAccount);
         return {
             errors: [],
@@ -52,8 +49,6 @@ export class AccountHTTPController {
         }
     }
 
-    // TODO Add Validation to Request
-    // TODO Add soft delete
     async deleteAccountById (request: Request): Promise<HTTPResponse> {
         const params  =  request.params;
         const requestingAccount = request.requestingAccount;

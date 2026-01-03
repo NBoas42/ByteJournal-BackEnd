@@ -43,7 +43,7 @@ export class JournalEntryPostgresResource {
         }
     
         async deleteJournalEntryById (id: string): Promise<boolean> {
-            const result = await this.journalEntryRepository.delete({ id })
+            const result = await this.journalEntryRepository.delete({ id });// TODO Add soft delete
             return result.affected === 1 ? true:false;
         }
 
