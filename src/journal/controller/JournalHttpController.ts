@@ -2,148 +2,215 @@ import { Request } from "express";
 
 import { HTTPResponse } from "../../shared/types/HttpResponse";
 
-import { SearchJournalRequest } from "../types/journal/SearchJournalRequest";
-import { SearchJournalEntryRequest } from "../types/journal-entry/SearchJournalEntryRequest";
+import {
+    SearchJournalRequestSchema,
+} from "../types/journal/SearchJournalRequest";
 
-import { JournalPersistenceService } from '../service/JournalPersitenceService';
+import {
+    SearchJournalEntryRequestSchema,
+} from "../types/journal-entry/SearchJournalEntryRequest";
+
+import {
+    CreateJournalEntryRequestSchema,
+} from "../types/journal-entry/CreateJournalEntryRequest";
+
+import {
+    CreateJournalRequestSchema,
+} from "../types/journal/CreateJournalRequest";
+
+import {
+    UpdateJournalEntryRequestSchema,
+} from "../types/journal-entry/UpdateJournalEntryRequest";
+
+import {
+    UpdateJournalRequestSchema} from "../types/journal/UpdateJournalRequest";
+
+import { JournalPersistenceService } from "../service/JournalPersitenceService";
 import { JournalEntryPersistenceService } from "../service/JournalEntryPersitenceService";
-import { CreateJournalEntryRequest } from "../types/journal-entry/CreateJournalEntryRequest";
-import { CreateJournalRequest } from "../types/journal/CreateJournalRequest";
-import { UpdateJournalEntryRequest } from "../types/journal-entry/UpdateJournalEntryRequest";
-import { UpdateJournalRequest } from "../types/journal/UpdateJournalRequest";
 
 export class JournalHTTPController {
-
     journalPersistenceService: JournalPersistenceService;
-    journalEntryPersistenceService: JournalEntryPersistenceService
+    journalEntryPersistenceService: JournalEntryPersistenceService;
 
     static get inject() {
-        return [
-            'JournalPersistenceService',
-            'JournalEntryPersistenceService'
-        ];
+        return ["JournalPersistenceService", "JournalEntryPersistenceService"];
     }
 
-    constructor( 
+    constructor(
         journalPersistenceService: JournalPersistenceService,
         journalEntryPersistenceService: JournalEntryPersistenceService
-    ){
+    ) {
         this.journalPersistenceService = journalPersistenceService;
         this.journalEntryPersistenceService = journalEntryPersistenceService;
     }
 
     // <---------Journal-------------->
-    async searchJournal (request: Request): Promise<HTTPResponse> {
+    async searchJournal(request: Request): Promise<HTTPResponse> {
         const requestingAccount = request.requestingAccount;
-        const searchJournalRequest: SearchJournalRequest =  request.query;// TODO Validate With Zod Safe Parse
-        const journals = await this.journalPersistenceService.searchJournals(searchJournalRequest, requestingAccount);
+
+        const searchJournalRequest = SearchJournalRequestSchema.safeParse(
+            request.query
+        );
+
+        if (searchJournalRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: journals
-        }
+            data: await this.journalPersistenceService.searchJournals(
+                searchJournalRequest.data,
+                requestingAccount
+            ),
+        };
     }
 
     async getJournalById(request: Request): Promise<HTTPResponse> {
         const id = request.params.id;
-        const requestingAccount  = request.requestingAccount;
-        const journal = await this.journalPersistenceService.getJournalById(id, requestingAccount);
+        const requestingAccount = request.requestingAccount;
         return {
             errors: [],
             status: 200,
-            data: journal
-        }
+            data: await this.journalPersistenceService.getJournalById(
+                id,
+                requestingAccount
+            ),
+        };
     }
 
-    async createJournal (request: Request): Promise<HTTPResponse> {
-        const journalToCreate: CreateJournalRequest = request.body;// TODO Validate With Zod Safe Parse
-        const createdJournal = await this.journalPersistenceService.createJournal(journalToCreate);
+    async createJournal(request: Request): Promise<HTTPResponse> {
+        const createJournalRequest = CreateJournalRequestSchema.safeParse(request.body);
+
+        if (createJournalRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: createdJournal
-        }
+            data: await this.journalPersistenceService.createJournal(createJournalRequest.data)
+        };
     }
 
-    async updateJournalById (request: Request): Promise<HTTPResponse> {
+    async updateJournalById(request: Request): Promise<HTTPResponse> {
         const params = request.params;
-        const requestingAccount  = request.requestingAccount;
-        const body: UpdateJournalRequest = request.body;// TODO Validate With Zod Safe Parse
-        const wasUpdated = await this.journalPersistenceService.updateJournalById(params.id, body, requestingAccount);
+        const requestingAccount = request.requestingAccount;
+        const updateJournalRequest = UpdateJournalRequestSchema.safeParse(
+            request.body
+        );
+
+        if (updateJournalRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: wasUpdated
-        }
+            data: await this.journalPersistenceService.updateJournalById(
+                params.id,
+                updateJournalRequest.data,
+                requestingAccount
+            ),
+        };
     }
 
-    async deleteJournalById (request: Request): Promise<HTTPResponse> {
+    async deleteJournalById(request: Request): Promise<HTTPResponse> {
         const params = request.params;
-        const requestingAccount  = request.requestingAccount;
-        const wasDeleted = await this.journalPersistenceService.deleteJournalById(params.id, requestingAccount);
+        const requestingAccount = request.requestingAccount;
         return {
             errors: [],
             status: 200,
-            data: wasDeleted
-        }
+            data: await this.journalPersistenceService.deleteJournalById(
+                params.id,
+                requestingAccount
+            ),
+        };
     }
 
     // <---------Journal Entry-------------->
     async getJournalEntryById(request: Request): Promise<HTTPResponse> {
         const params = request.params;
         const requestingAccount = request.requestingAccount;
-        const journalEntry = await this.journalEntryPersistenceService.getJournalEntryById(params.id, requestingAccount);
         return {
             errors: [],
             status: 200,
-            data: journalEntry
-        }
+            data: await this.journalEntryPersistenceService.getJournalEntryById(
+                params.journalEntryId,
+                requestingAccount
+            ),
+        };
     }
 
     async searchJournalEntry(request: Request): Promise<HTTPResponse> {
         const requestingAccount = request.requestingAccount;
-        const searchJournalEntryRequest: SearchJournalEntryRequest = request.query// TODO Validate With Safe Parse Zod
-        const journalEntrys = await this.journalEntryPersistenceService.searchJournalEntries(searchJournalEntryRequest, requestingAccount);
+        const searchJournalEntryRequest = SearchJournalEntryRequestSchema.safeParse(
+            request.query
+        );
+
+        if (searchJournalEntryRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: journalEntrys
-        }
+            data: await this.journalEntryPersistenceService.searchJournalEntries(
+                searchJournalEntryRequest.data,
+                requestingAccount
+            ),
+        };
     }
 
-    async createJournalEntry (request: Request): Promise<HTTPResponse> {
-        const journalEntryToCreate: CreateJournalEntryRequest = request.body;// TODO Validate With Safe Parse Zod
-        const createdJournalEntry = await this.journalEntryPersistenceService.createJournalEntry(journalEntryToCreate);
+    async createJournalEntry(request: Request): Promise<HTTPResponse> {
+        const createJournalEntryRequest = CreateJournalEntryRequestSchema.safeParse(
+            request.body
+        );
+
+        if (createJournalEntryRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: createdJournalEntry
-        }
+            data: await this.journalEntryPersistenceService.createJournalEntry(
+                createJournalEntryRequest.data
+            ),
+        };
     }
 
-    async updateJournalEntryById (request: Request): Promise<HTTPResponse> {
-        const requestingAccount = request.requestingAccount;        
-        const journalEntryId = request?.params?.journalEntryId;
-        const journalEntryToUpdate: UpdateJournalEntryRequest = request?.body;// TODO Validate With Safe Parse Zod
-        const wasUpdated = await this.journalEntryPersistenceService.updateJournalEntryById(journalEntryId, journalEntryToUpdate, requestingAccount);
+    async updateJournalEntryById(request: Request): Promise<HTTPResponse> {
+        const requestingAccount = request.requestingAccount;
+        const journalEntryId = request.params.journalEntryId;
+        const updateJournalEntryRequest = UpdateJournalEntryRequestSchema.safeParse(request.body);
+
+        if (updateJournalEntryRequest.success === false) {
+            throw new Error("INVALID_REQUEST");
+        }
+
         return {
             errors: [],
             status: 200,
-            data: wasUpdated
-        }
+            data:  await this.journalEntryPersistenceService.updateJournalEntryById(
+                journalEntryId,
+                updateJournalEntryRequest.data,
+                requestingAccount
+            ),
+        };
     }
 
-    async deleteJournalEntryById (request: Request): Promise<HTTPResponse> {
+    async deleteJournalEntryById(request: Request): Promise<HTTPResponse> {
         const params = request.params;
-        const requestingAccount = request.requestingAccount;        
-        const wasDeleted = await this.journalEntryPersistenceService.deleteJournalEntryById(params.journalEntryId, requestingAccount);
+        const requestingAccount = request.requestingAccount;
+
         return {
             errors: [],
             status: 200,
-            data: wasDeleted
-        }
+            data: await this.journalEntryPersistenceService.deleteJournalEntryById(
+                params.journalEntryId,
+                requestingAccount
+            ),
+        };
     }
-    
-
 }
-

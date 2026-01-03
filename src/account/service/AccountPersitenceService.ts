@@ -2,6 +2,8 @@ import { AuthService } from '../../auth/service/AuthService';
 import { Account } from '../types/Account';
 import { AccountPostgresResource } from '../resource/postgres/AccountPostgresResouce';
 import { RequestingAccountContext } from '../../shared/types/RequestingAccountContext';
+import { UpdateAccountRequest } from '../types/UpdateAccountRequest';
+import { CreateAccountRequest } from '../types/CreateAccountRequest';
 
 export class AccountPersistenceService {
 
@@ -31,14 +33,14 @@ export class AccountPersistenceService {
             return account;
         }
 
-        async createAccount (accountToCreate: Account): Promise<boolean> {
+        async createAccount (accountToCreate: CreateAccountRequest): Promise<boolean> {
             accountToCreate.password = await this.authService.hashPassword(accountToCreate.password);
             // TODO Create a Default Journal 
             // TODO resource should return data
             return this.accountPostgresResource.createAccount(accountToCreate);
         }
         
-        async updateAccountById (id: string, accountToUpdate: Account, requestingAccount: RequestingAccountContext): Promise<boolean> {
+        async updateAccountById (id: string, accountToUpdate: UpdateAccountRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
             const account = await this.accountPostgresResource.getAccountById(id);
             const isOwner = account.id === requestingAccount.id;
             const isAdmin = requestingAccount.permissionType === "ADMIN";

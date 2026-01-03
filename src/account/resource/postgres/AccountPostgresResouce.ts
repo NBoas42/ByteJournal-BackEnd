@@ -1,4 +1,6 @@
 import { Account } from '../../types/Account';
+import { CreateAccountRequest } from '../../types/CreateAccountRequest';
+import { UpdateAccountRequest } from '../../types/UpdateAccountRequest';
 import { AccountEntity } from './AccountEntity';
 import { DataSource, Repository } from 'typeorm';
 
@@ -33,7 +35,7 @@ export class AccountPostgresResource {
 
 
         // TODO Add Specific DTO
-        async createAccount (account: Account): Promise<boolean> {
+        async createAccount (account: CreateAccountRequest): Promise<boolean> {
             const result = await this.accountRepository.save(account);
             if(!result.id){
                 return false;
@@ -42,7 +44,7 @@ export class AccountPostgresResource {
         }
     
         // TODO Add Specific DTO
-        async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
+        async updateAccountById (id: string, accountToUpdate: UpdateAccountRequest): Promise<boolean> {
             const result = await this.accountRepository.update({id}, accountToUpdate);
             return result.affected === 1 ? true:false;
 
