@@ -1,7 +1,7 @@
 import { Request } from "express";
 
 import {AccountPersistenceService} from '../service/AccountPersitenceService';
-import { HTTPResponse } from "../../shared/http/types";
+import { HTTPResponse } from "../../shared/types/HttpResponse";
 
 
 export class AccountHTTPController {
@@ -18,8 +18,9 @@ export class AccountHTTPController {
 
     // TODO Add Validation to Request
     async getAccountById(request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
-        const account = await this.accountPersistenceService.getAccountById(params.id);
+        const params = request.params;
+        const requestingAccount = request.requestingAccount;
+        const account = await this.accountPersistenceService.getAccountById(params.id, requestingAccount);
         return {
             errors: [],
             status: 200,
@@ -39,10 +40,11 @@ export class AccountHTTPController {
         }
     }
 
-    // TODO Add Validation to Request
     async updateAccountById (request: Request): Promise<HTTPResponse> {
-        const { params, body } = request;// TODO Probably a better way to deal with this
-        const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, body);
+        const params = request.params;
+        const accountToUpdate = request.body;
+        const requestingAccount = request.requestingAccount;
+        const updatedAccount = await this.accountPersistenceService.updateAccountById(params.id, accountToUpdate, requestingAccount);
         return {
             errors: [],
             status: 200,
@@ -51,16 +53,16 @@ export class AccountHTTPController {
     }
 
     // TODO Add Validation to Request
-    // TODO Add Account Role Admin Access Only
     // TODO Add soft delete
     async deleteAccountById (request: Request): Promise<HTTPResponse> {
-        const { params } =  request;
-        const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id);
+        const params  =  request.params;
+        const requestingAccount = request.requestingAccount;
+        const wasDeleted = await this.accountPersistenceService.deleteAccountById(params.id, requestingAccount);
         return {
             errors: [],
             status: 200,
             data: wasDeleted
         }
-    }
+        }
 
 }

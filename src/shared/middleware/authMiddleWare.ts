@@ -6,17 +6,17 @@ export function authMiddleware(injector: Injector) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
+      const authService: AuthService = injector.create("AuthService");
 
       if (!authHeader?.startsWith("Bearer ")) {
         return res.status(403).json({ error: "Not Authorized" });
       }
 
       const token = authHeader.slice("Bearer ".length).trim();
-      const authService: AuthService = injector.create("AuthService");
 
-      const payload = await authService.authenticateJWTToken(token);
+      const authorziedAccount = await authService.authenticateJWTToken(token);
 
-      req.body.requestingAccount = payload;
+      req.requestingAccount = authorziedAccount;
 
       return next();
     } catch {

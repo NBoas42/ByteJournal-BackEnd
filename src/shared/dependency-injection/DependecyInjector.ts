@@ -27,24 +27,19 @@ async function buildInjector(): Promise<Injector> {
   const dbConnection = await createDataDBConnection();
   inj.register('DBConnection', dbConnection)
 
-  // Init Auth Module
+  // Auth Module
   inj.factory('AuthHTTPController', AuthHTTPController);
-
   inj.factory('AuthService', AuthService);
 
-  // Init Account Module
+  // Account Module
   inj.factory('AccountHTTPController', AccountHTTPController);
-
   inj.factory('AccountPersistenceService', AccountPersistenceService);
-
   inj.factory('AccountPostgresResource', AccountPostgresResource);
 
-  // Init Journal Module
+  // Journal Module
   inj.factory('JournalHTTPController', JournalHTTPController);
-
   inj.factory('JournalPersistenceService', JournalPersistenceService);
   inj.factory('JournalEntryPersistenceService', JournalEntryPersistenceService);
-
   inj.factory('JournalPostgresResource', JournalPostgresResource);
   inj.factory('JournalEntryPostgresResource', JournalEntryPostgresResource);
 

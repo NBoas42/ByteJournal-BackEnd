@@ -1,3 +1,0 @@
-interface HttpError extends Error{
-    
-}

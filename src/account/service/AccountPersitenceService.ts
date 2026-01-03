@@ -1,6 +1,7 @@
 import { AuthService } from '../../auth/service/AuthService';
 import { Account } from '../types/Account';
 import { AccountPostgresResource } from '../resource/postgres/AccountPostgresResouce';
+import { RequestingAccountContext } from '../../shared/types/RequestingAccountContext';
 
 export class AccountPersistenceService {
 
@@ -19,25 +20,46 @@ export class AccountPersistenceService {
             this.authService = authService;
         }
       
-        async getAccountById(id: string): Promise<Account> {
-            return this.accountPostgresResource.getAccountById(id);
+        async getAccountById(id: string, requestingAccount: RequestingAccountContext): Promise<Account> {
+            const account = await this.accountPostgresResource.getAccountById(id);
+            const isOwner = account.id === requestingAccount.id;
+            const isAdmin = requestingAccount.role === "ADMIN";
+            
+            if(!isOwner && !isAdmin){
+                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+            }
+            return account;
         }
 
         async createAccount (accountToCreate: Account): Promise<boolean> {
-            if(accountToCreate.password){
-                accountToCreate.password = await this.authService.hashPassword(accountToCreate.password);
-            }
+            accountToCreate.password = await this.authService.hashPassword(accountToCreate.password);
             // TODO Create a Default Journal 
             // TODO resource should return data
             return this.accountPostgresResource.createAccount(accountToCreate);
         }
         
-        async updateAccountById (id: string, accountToUpdate: Account): Promise<boolean> {
-             return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
+        async updateAccountById (id: string, accountToUpdate: Account, requestingAccount: RequestingAccountContext): Promise<boolean> {
+            const account = await this.accountPostgresResource.getAccountById(id);
+            const isOwner = account.id === requestingAccount.id;
+            const isAdmin = requestingAccount.role === "ADMIN";
+
+            if(!isOwner && !isAdmin){
+                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+            }
+
+            return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
         }
     
-        async deleteAccountById (id: string): Promise<boolean> {
-             return this.accountPostgresResource.deleteAccountById(id);
+        async deleteAccountById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
+            const account = await this.accountPostgresResource.getAccountById(id);
+            const isOwner = account.id === requestingAccount.id;
+            const isAdmin = requestingAccount.role === "ADMIN";
+
+            if(!isOwner && !isAdmin){
+                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+            }
+
+            return this.accountPostgresResource.deleteAccountById(id);
         }
     
 }

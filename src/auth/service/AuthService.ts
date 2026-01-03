@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { ApplicationConfig } from "../../shared/config/config";
 import { AccountPostgresResource } from "../../account/resource/postgres/AccountPostgresResouce";
 import config from '../../shared/config/config.json';
+import { RequestingAccountContext } from '../../shared/types/RequestingAccountContext';
 
 
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
         }
 
     // TODO Create Return Type RequestingAccount
-    async authenticateJWTToken(token: string): Promise<{ id: string }> {
+    async authenticateJWTToken(token: string): Promise<RequestingAccountContext> {
     const decoded = jwt.verify(token, this.config.auth.jwtSecret) as { id: string };
     const account = await this.accountPostgresResource.getAccountById(decoded.id);
     if (!account) {
@@ -31,6 +32,7 @@ export class AuthService {
     }
     return { 
         id: account.id,
+        role: 'USER'
     };
     }
 

@@ -22,8 +22,8 @@ export class JournalEntryPostgresResource {
         async getJournalEntryById(id: string): Promise<JournalEntry> {
             const journalEntry = await this.journalEntryRepository.findOne({ where:{ id } });
             if(!journalEntry){
-                // TODO  Add Better Error Handling to add status
-                throw new Error('Not Found');
+                throw new Error('Not Found');// TODO  Add Better Error Handling to add status
+
             }
             return journalEntry as JournalEntry;
         }

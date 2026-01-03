@@ -1,5 +1,5 @@
-import { Application,  Request, Response, NextFunction } from 'express';
-import { ControllerOperation } from './types';
+import {  Request, Response } from 'express';
+import { ControllerOperation } from '../types/ControllerOperation';
 
 
 export async function expressRequestHandler(request: Request, response: Response, operation: ControllerOperation){

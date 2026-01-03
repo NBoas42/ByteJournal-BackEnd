@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import { HTTPResponse } from "../../shared/http/types";
+import { HTTPResponse } from "../../shared/types/HttpResponse";
 import { AuthService } from "../service/AuthService";
 
 

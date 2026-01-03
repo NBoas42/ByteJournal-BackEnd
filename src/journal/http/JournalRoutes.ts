@@ -10,7 +10,7 @@ export function registerJournalRoutes (app: Application, injector: Injector) {
     const auth = authMiddleware(injector);
 
     // <---------Journal-------------->
-    app.get('/v0/journal', auth, ( request, response) => {
+    app.get('/v0/journal', auth, (request, response) => {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
         return expressRequestHandler(request, response, controller.searchJournal.bind(controller))
     });

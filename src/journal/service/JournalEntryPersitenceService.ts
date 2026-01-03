@@ -5,6 +5,7 @@ import { SearchJournalEntryRequest } from '../types/journal-entry/SearchJournalE
 import { UpdateJournalEntryRequest } from '../types/journal-entry/UpdateJournalEntryRequest';
 
 import { JournalEntryPostgresResource } from '../resource/postgres/JournalEntryPostgresResource';
+import { RequestingAccountContext } from '../../shared/types/RequestingAccountContext';
 
 export class JournalEntryPersistenceService {
 
@@ -20,29 +21,52 @@ export class JournalEntryPersistenceService {
             this.journalEntryPostgresResource = journalEntryPostgresResource;
         }
       
-        async getJournalEntryById(id: string): Promise<JournalEntry> {
-            return this.journalEntryPostgresResource.getJournalEntryById(id);
+        async getJournalEntryById(id: string, requestingAccount: RequestingAccountContext): Promise<JournalEntry> {
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        const isOwner = journalEntry.accountId === requestingAccount.id;
+        const isAdmin = requestingAccount.role === "ADMIN";
+        if(!isOwner && !isAdmin){
+            throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+        }
+            return journalEntry;
         }
 
         async createJournalEntry (journalEntryToCreate: CreateJournalEntryRequest): Promise<JournalEntry> {
-            // Check If Journal Exists First
             return this.journalEntryPostgresResource.createJournalEntry(journalEntryToCreate);
         }
         
         // TODO Make this update with relations
-        async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest): Promise<boolean> {
+        async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        const isOwner = journalEntry.accountId === requestingAccount.id;
+        const isAdmin = requestingAccount.role === "ADMIN";
+        if(!isOwner && !isAdmin){
+            throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+        }            
              return this.journalEntryPostgresResource.updateJournalEntryById(id, journalEntryToUpdate);
         }
     
-        async deleteJournalEntryById (id: string): Promise<boolean> {
-             return this.journalEntryPostgresResource.deleteJournalEntryById(id);
+        async deleteJournalEntryById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        const isOwner = journalEntry.accountId === requestingAccount.id;
+        const isAdmin = requestingAccount.role === "ADMIN";
+        if(!isOwner && !isAdmin){
+            throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+        }
+            return this.journalEntryPostgresResource.deleteJournalEntryById(id);
         }
 
         // TODO Need to add Total (Tasks, Notes, Completed)
         // TODO Need to make it so that the title is regex if possible
         // TODO Add Pagination
-        async searchJournalEntries (searchRequest: SearchJournalEntryRequest): Promise<JournalEntry[]> {
-            return this.journalEntryPostgresResource.searchJournalEntries(searchRequest);
+        async searchJournalEntries (searchRequest: SearchJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntry[]> {
+            if(requestingAccount.role === "ADMIN"){
+                 return this.journalEntryPostgresResource.searchJournalEntries(searchRequest);
+            }
+            return this.journalEntryPostgresResource.searchJournalEntries({
+                ...searchRequest,
+                accountId: requestingAccount.id
+            });
         }
     
 }
