@@ -1,5 +1,6 @@
-// TODO Add Relations Here
-export interface UpdateJournalEntryRequest{
-    title?:string;
-    tags?:string[];
-}
+import * as z from 'zod';
+export const UpdateJournalEntryRequestSchema = z.object({
+    title:z.string().optional(),
+    tags:z.array(z.string()).optional(),
+});
+export type UpdateJournalEntryRequest = z.infer<typeof UpdateJournalEntryRequestSchema>;
