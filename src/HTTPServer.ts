@@ -3,8 +3,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import "reflect-metadata"
 
-import { registerAccountRoutes } from './account/http/AccountRoutes';
 import { initInjector } from './shared/dependency-injection/DependecyInjector';
+
+import { registerAccountRoutes } from './account/http/AccountRoutes';
 import { registerJournalRoutes } from './journal/http/JournalRoutes';
 import { registerAuthRoutes } from './auth/http/AuthRoutes';
 
