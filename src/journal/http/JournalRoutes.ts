@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { expressRequestHandler } from '../../shared/http/ExpressRequestHandler';
 import { JournalHTTPController } from '../controller/JournalHttpController';
 import { Injector } from 'boxed-injector';
-import { authMiddleware } from '../../shared/middleware/authMiddleWare';
+import { authMiddleware } from '../../auth/middleware/authMiddleWare';
 
 
 export function registerJournalRoutes (app: Application, injector: Injector) {

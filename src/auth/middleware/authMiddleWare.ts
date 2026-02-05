@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Injector } from "boxed-injector";
-import { AuthService } from "../../auth/service/AuthService";
+import { AuthService } from "../service/AuthService";
 
+// TODO Does this belong in shared?
 export function authMiddleware(injector: Injector) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {

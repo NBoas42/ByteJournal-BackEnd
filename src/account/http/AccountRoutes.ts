@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { expressRequestHandler } from '../../shared/http/ExpressRequestHandler';
 import { AccountHTTPController } from '../controller/AccountHTTPController';
 import { Injector } from 'boxed-injector';
-import { authMiddleware } from '../../shared/middleware/authMiddleWare';
+import { authMiddleware } from '../../auth/middleware/authMiddleWare';
 
 
 export function registerAccountRoutes (app: Application, injector: Injector) {
