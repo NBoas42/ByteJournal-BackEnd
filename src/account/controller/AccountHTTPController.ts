@@ -19,7 +19,7 @@ export class AccountHTTPController {
 
   async getAccountById(request: Request): Promise<HTTPResponse> {
     const params = request.params;
-    const requestingAccount = request.requestingAccount;
+    const requestingAccount = request.requestingAccount; // This seems confusing on first read how do I make it more clear this comes in from the middle ware
 
     return {
       errors: [],

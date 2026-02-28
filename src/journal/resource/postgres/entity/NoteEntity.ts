@@ -23,6 +23,9 @@ export class NoteEntity {
   @Column("text", { name: "content" })
   content!: string;
 
+  @Column("text", { name: "type" })
+  type!: string;
+
   @Column("timestamp without time zone", {
     name: "created_at",
     default: () => "CURRENT_TIMESTAMP",

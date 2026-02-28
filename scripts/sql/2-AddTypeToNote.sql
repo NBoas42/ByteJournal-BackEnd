@@ -1,0 +1,13 @@
+BEGIN;
+
+ALTER TABLE note
+  ADD COLUMN IF NOT EXISTS type text;
+
+UPDATE note
+SET type = 'NOTE'
+WHERE type IS NULL;
+
+ALTER TABLE note
+  ALTER COLUMN type SET NOT NULL;
+
+COMMIT;
