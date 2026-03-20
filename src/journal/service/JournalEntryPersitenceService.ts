@@ -59,13 +59,17 @@ export class JournalEntryPersistenceService {
         // TODO Need to add Total (Tasks, Notes, Completed)
         // TODO Need to make it so that the title is regex if possible
         // TODO Add Pagination
-        async searchJournalEntriesWithRelations (searchRequest: SearchJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntry[]> {
+        async searchJournalEntriesWithRelations (journalId: string, searchRequest: SearchJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntry[]> {
             if(requestingAccount.permissionType === "ADMIN"){
-                 return this.journalEntryPostgresResource.searchJournalEntriesWithRelations(searchRequest);
+                 return this.journalEntryPostgresResource.searchJournalEntriesWithRelations({
+                    ...searchRequest,
+                    journalId: journalId
+                 });
             }
             return this.journalEntryPostgresResource.searchJournalEntriesWithRelations({
                 ...searchRequest,
-                accountId: requestingAccount.id
+                accountId: requestingAccount.id,
+                journalId: journalId
             });
         }
     
