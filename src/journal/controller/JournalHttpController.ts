@@ -145,7 +145,7 @@ export class JournalHTTPController {
     async searchJournalEntriesWithRelations(request: Request): Promise<HTTPResponse> {
         const requestingAccount = request.requestingAccount;
         const searchJournalEntryRequest = SearchJournalEntryRequestSchema.safeParse(
-            request.query
+            request.body
         );
 
         if (searchJournalEntryRequest.success === false) {
@@ -156,6 +156,7 @@ export class JournalHTTPController {
             errors: [],
             status: 200,
             data: await this.journalEntryPersistenceService.searchJournalEntriesWithRelations(
+                request.params.journalId,
                 searchJournalEntryRequest.data,
                 requestingAccount
             ),
