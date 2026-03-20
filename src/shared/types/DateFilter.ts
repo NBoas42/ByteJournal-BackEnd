@@ -1,4 +1,4 @@
 export type DateFilter = {
-    before?: Date;
-    after?: Date;
+    before?: string;
+    after?: string;
 }

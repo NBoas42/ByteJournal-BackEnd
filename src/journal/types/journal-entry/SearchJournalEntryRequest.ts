@@ -3,8 +3,8 @@ import * as z from 'zod';
 
 // TODO move to shared types
 const DateFilterSchema = z.object({
-    before: z.coerce.date().optional(),
-    after: z.coerce.date().optional(),
+    before: z.coerce.string().optional(),
+    after: z.coerce.string().optional(),
 }).optional();
 
 export const SearchJournalEntryRequestSchema = z.object({
