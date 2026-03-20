@@ -53,6 +53,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
         async searchJournalEntriesWithRelations (searchRequest: SearchJournalEntryRequest): Promise<JournalEntry[]> {
 
             const { journalId, accountId, title, createdAt, updatedAt } = searchRequest;
+            const {limit = 20, offset = 0} = searchRequest;
             const where: FindOptionsWhere<JournalEntryEntity> = {};
 
             if(journalId){ 
@@ -77,6 +78,11 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
 
             const result = await this.journalEntryRepository.find({
                 where,
+                take: limit,
+                skip: offset,
+                order: {
+                    updatedAt: 'DESC',
+                },
                 relations: ['notes', 'review', 'tasks'],
             })
             const journalEntrys = result.map(result => result as JournalEntry) || [];

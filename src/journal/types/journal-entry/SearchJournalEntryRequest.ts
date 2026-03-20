@@ -11,6 +11,8 @@ export const SearchJournalEntryRequestSchema = z.object({
     accountId: z.string().optional(),
     journalId: z.string().optional(),
     title: z.string().optional(),
+    limit: z.number().optional(),
+    offset: z.number().optional(),
     createdAt: DateFilterSchema,
     updatedAt: DateFilterSchema,
 });
