@@ -1,8 +1,9 @@
-import "express-serve-static-core";
-import type { RequestingAccountContext } from "../shared/types/RequestingAccountContext";
+import type { RequestingAccountContext } from "./RequestingAccountContext";
 
-declare module "express-serve-static-core" {
-  interface Request {
-    requestingAccount?: RequestingAccountContext;
+declare global {
+  namespace Express {
+    interface Request {
+      requestingAccount: RequestingAccountContext;
+    }
   }
 }
