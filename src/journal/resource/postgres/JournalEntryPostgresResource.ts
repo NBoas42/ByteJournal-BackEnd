@@ -1,13 +1,14 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, FindOptionsWhere } from 'typeorm';
 
 import { JournalEntryEntity } from '../postgres/entity/JournalEntryEntity';
+import { TypeOrmResource } from '../../../shared/resource/TypeOrmResource';
 
 import { JournalEntry } from '../../types/journal-entry/JournalEntry';
 import { SearchJournalEntryRequest } from '../../types/journal-entry/SearchJournalEntryRequest';
 import { CreateJournalEntryRequest } from '../../types/journal-entry/CreateJournalEntryRequest';
 import { UpdateJournalEntryRequest } from '../../types/journal-entry/UpdateJournalEntryRequest';
 
-export class JournalEntryPostgresResource {
+export class JournalEntryPostgresResource extends TypeOrmResource {
 
         journalEntryRepository: Repository<JournalEntryEntity>;
 
@@ -16,6 +17,7 @@ export class JournalEntryPostgresResource {
         }
 
         constructor( dbConnection: DataSource){
+            super();
             this.journalEntryRepository = dbConnection.getRepository(JournalEntryEntity);
         }
 
@@ -47,12 +49,35 @@ export class JournalEntryPostgresResource {
             return result.affected === 1 ? true:false;
         }
 
-        // TODO Need to add Total (Tasks, Notes, Completed)
         // TODO Need to make it so that the title is regex if possible
-        // TODO Need to search updated after before and between dates
-        async searchJournalEntries (searchRequest: SearchJournalEntryRequest): Promise<JournalEntry[]> {
+        async searchJournalEntriesWithRelations (searchRequest: SearchJournalEntryRequest): Promise<JournalEntry[]> {
+
+            const { journalId, accountId, title, createdAt, updatedAt } = searchRequest;
+            const where: FindOptionsWhere<JournalEntryEntity> = {};
+
+            if(journalId){ 
+                where.journalId = journalId;
+            }
+
+            if(accountId){ 
+                where.accountId = accountId;
+            }
+
+            if(title){ 
+                where.title = title;
+            }
+
+            if(createdAt){ 
+                where.createdAt = this.adaptDateFilter(createdAt);
+            }
+
+            if(updatedAt){ 
+                where.updatedAt = this.adaptDateFilter(updatedAt);
+            }
+
             const result = await this.journalEntryRepository.find({
-                where: searchRequest
+                where,
+                relations: ['notes', 'review', 'tasks'],
             })
             const journalEntrys = result.map(result => result as JournalEntry) || [];
             return journalEntrys;

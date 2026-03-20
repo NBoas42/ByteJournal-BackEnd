@@ -142,7 +142,7 @@ export class JournalHTTPController {
         };
     }
 
-    async searchJournalEntry(request: Request): Promise<HTTPResponse> {
+    async searchJournalEntriesWithRelations(request: Request): Promise<HTTPResponse> {
         const requestingAccount = request.requestingAccount;
         const searchJournalEntryRequest = SearchJournalEntryRequestSchema.safeParse(
             request.query
@@ -155,7 +155,7 @@ export class JournalHTTPController {
         return {
             errors: [],
             status: 200,
-            data: await this.journalEntryPersistenceService.searchJournalEntries(
+            data: await this.journalEntryPersistenceService.searchJournalEntriesWithRelations(
                 searchJournalEntryRequest.data,
                 requestingAccount
             ),
