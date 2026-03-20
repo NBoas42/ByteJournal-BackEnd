@@ -61,9 +61,9 @@ export class JournalEntryPersistenceService {
         // TODO Add Pagination
         async searchJournalEntriesWithRelations (searchRequest: SearchJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntry[]> {
             if(requestingAccount.permissionType === "ADMIN"){
-                 return this.journalEntryPostgresResource.searchJournalEntries(searchRequest);
+                 return this.journalEntryPostgresResource.searchJournalEntriesWithRelations(searchRequest);
             }
-            return this.journalEntryPostgresResource.searchJournalEntries({
+            return this.journalEntryPostgresResource.searchJournalEntriesWithRelations({
                 ...searchRequest,
                 accountId: requestingAccount.id
             });
