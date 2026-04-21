@@ -26,28 +26,33 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
                 where:{ id },
                 relations: ['notes', 'review', 'tasks'],
             });
+
             if(!journalEntry){
                 throw new Error('Not Found');// TODO  Add Better Error Handling to add status
             }
+            
             return journalEntry as JournalEntry;
         }
 
         async createJournalEntry (journalEntry: CreateJournalEntryRequest): Promise<JournalEntry> {
             const createdJournalEntry = await this.journalEntryRepository.save(journalEntry);
+
             if(!createdJournalEntry.id){
                 throw new Error('Could Not Create JournalEntry')
             }
+
             return createdJournalEntry as JournalEntry;
         }
     
         async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest): Promise<boolean> {
             const result = await this.journalEntryRepository.update({id}, journalEntryToUpdate);
-            return result.affected === 1 ? true:false;
 
+            return result.affected === 1 ? true:false;
         }
     
         async deleteJournalEntryById (id: string): Promise<boolean> {
             const result = await this.journalEntryRepository.delete({ id });// TODO Add soft delete
+
             return result.affected === 1 ? true:false;
         }
 
