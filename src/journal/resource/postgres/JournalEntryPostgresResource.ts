@@ -21,11 +21,13 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
             this.journalEntryRepository = dbConnection.getRepository(JournalEntryEntity);
         }
 
-        async getJournalEntryById(id: string): Promise<JournalEntry> {
-            const journalEntry = await this.journalEntryRepository.findOne({ where:{ id } });
+        async getJournalEntryByIdWithRelations(id: string): Promise<JournalEntry> {
+            const journalEntry = await this.journalEntryRepository.findOne({ 
+                where:{ id },
+                relations: ['notes', 'review', 'tasks'],
+            });
             if(!journalEntry){
                 throw new Error('Not Found');// TODO  Add Better Error Handling to add status
-
             }
             return journalEntry as JournalEntry;
         }
@@ -85,6 +87,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
                 },
                 relations: ['notes', 'review', 'tasks'],
             })
+            
             const journalEntrys = result.map(result => result as JournalEntry) || [];
             return journalEntrys;
         }

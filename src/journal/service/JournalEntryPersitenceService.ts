@@ -21,8 +21,8 @@ export class JournalEntryPersistenceService {
             this.journalEntryPostgresResource = journalEntryPostgresResource;
         }
       
-        async getJournalEntryById(id: string, requestingAccount: RequestingAccountContext): Promise<JournalEntry> {
-        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        async getJournalEntryByIdWithRelations(id: string, requestingAccount: RequestingAccountContext): Promise<JournalEntry> {
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
         const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
@@ -37,7 +37,7 @@ export class JournalEntryPersistenceService {
         
         // TODO Make this update with relations
         async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
-        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
         const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
@@ -47,7 +47,7 @@ export class JournalEntryPersistenceService {
         }
     
         async deleteJournalEntryById (id: string, requestingAccount: RequestingAccountContext): Promise<boolean> {
-        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryById(id);
+        const journalEntry = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
         const isOwner = journalEntry.accountId === requestingAccount.id;
         const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){

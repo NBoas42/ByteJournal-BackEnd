@@ -129,13 +129,13 @@ export class JournalHTTPController {
     }
 
     // <---------Journal Entry-------------->
-    async getJournalEntryById(request: Request): Promise<HTTPResponse> {
+    async getJournalEntryByIdWithRelations(request: Request): Promise<HTTPResponse> {
         const params = request.params;
         const requestingAccount = request.requestingAccount;
         return {
             errors: [],
             status: 200,
-            data: await this.journalEntryPersistenceService.getJournalEntryById(
+            data: await this.journalEntryPersistenceService.getJournalEntryByIdWithRelations(
                 params.journalEntryId,
                 requestingAccount
             ),
