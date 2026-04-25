@@ -1,13 +1,22 @@
-export interface JournalEntry {
-      id: string;
-      title: string;
-      journalId: string;
-      accountId: string;
-      tags?: string[];
-      createdAt: Date;
-      updatedAt: Date;
-}
+import * as z from 'zod';
+import { NoteSchema } from '../note/Note';
+import { TaskSchema } from '../task/Task';
+import { ReviewSchema } from '../review/Review';
 
-export interface JournalEntryWithRelations {
-     
-}
+export const JournalEntrySchema = z.object({
+    id: z.string(),
+    journalId: z.string(),
+    accountId: z.string(),
+    title: z.string(),
+    tags: z.array(z.string()).optional(),
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date(),
+});
+export type JournalEntry = z.infer<typeof JournalEntrySchema>;
+
+export const JournalEntryWithRelationsSchema = JournalEntrySchema.extend({
+    notes: z.array(NoteSchema),
+    tasks: z.array(TaskSchema),
+    review: ReviewSchema.nullable(),
+});
+export type JournalEntryWithRelations = z.infer<typeof JournalEntryWithRelationsSchema>;

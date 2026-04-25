@@ -1,6 +1,13 @@
 import * as z from 'zod';
+import { UpdateNoteRequestSchema } from '../note/UpdateNoteRequest';
+import { UpdateTaskRequestSchema } from '../task/UpdateTaskRequest';
+import { UpdateReviewRequestSchema } from '../review/UpdateReviewRequest';
+
 export const UpdateJournalEntryRequestSchema = z.object({
-    title:z.string().optional(),
-    tags:z.array(z.string()).optional(),
+    title: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    notes: z.array(UpdateNoteRequestSchema).optional(),
+    tasks: z.array(UpdateTaskRequestSchema).optional(),
+    review: UpdateReviewRequestSchema.nullable().optional(),
 });
 export type UpdateJournalEntryRequest = z.infer<typeof UpdateJournalEntryRequestSchema>;

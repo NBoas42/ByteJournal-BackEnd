@@ -1,0 +1,14 @@
+import * as z from 'zod';
+
+export const TaskSchema = z.object({
+    id: z.string(),
+    journalEntryId: z.string(),
+    accountId: z.string(),
+    title: z.string(),
+    description: z.string().nullable().optional(),
+    status: z.enum(['NOT_STARTED', 'STARTED', 'COMPLETED']),
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date(),
+    finishedAt: z.coerce.date().nullable().optional(),
+});
+export type Task = z.infer<typeof TaskSchema>;
