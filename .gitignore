@@ -1,4 +1,4 @@
 node_modules/
 .vscode
-src/shared/config/config.json
+src/framework/config/config.json
 dist/

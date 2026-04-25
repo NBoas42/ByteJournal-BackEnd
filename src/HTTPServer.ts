@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import "reflect-metadata"
 
-import { initInjector } from './shared/dependency-injection/DependecyInjector';
+import { initInjector } from './framework/dependency-injection/DependecyInjector';
 
 import { registerAccountRoutes } from './account/http/AccountRoutes';
 import { registerJournalRoutes } from './journal/http/JournalRoutes';

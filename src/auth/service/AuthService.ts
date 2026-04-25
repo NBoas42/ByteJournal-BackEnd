@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { ApplicationConfig } from "../../shared/config/config";
+import { ApplicationConfig } from "../../framework/config/config";
 import { AccountPostgresResource } from "../../account/resource/postgres/AccountPostgresResouce";
-import config from '../../shared/config/config.json';
+import config from '../../framework/config/config.json';
 import { RequestingAccountContext } from '../../shared/types/RequestingAccountContext';
 
 
