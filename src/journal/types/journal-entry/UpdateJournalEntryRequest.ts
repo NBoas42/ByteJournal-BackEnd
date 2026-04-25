@@ -6,8 +6,14 @@ import { UpdateReviewRequestSchema } from '../review/UpdateReviewRequest';
 export const UpdateJournalEntryRequestSchema = z.object({
     title: z.string().optional(),
     tags: z.array(z.string()).optional(),
+});
+export type UpdateJournalEntryRequest = z.infer<typeof UpdateJournalEntryRequestSchema>;
+
+export const UpdateJournalEntryRequestWithRelationsSchema = z.object({
+    title: z.string().optional(),
+    tags: z.array(z.string()).optional(),
     notes: z.array(UpdateNoteRequestSchema),
     tasks: z.array(UpdateTaskRequestSchema),
     review: UpdateReviewRequestSchema,
 });
-export type UpdateJournalEntryRequest = z.infer<typeof UpdateJournalEntryRequestSchema>;
+export type UpdateJournalEntryRequestWithRelations = z.infer<typeof UpdateJournalEntryRequestWithRelationsSchema>;

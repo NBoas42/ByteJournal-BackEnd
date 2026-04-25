@@ -53,7 +53,7 @@ export function registerJournalRoutes (app: Application, injector: Injector) {
 
     app.patch('/v0/journal/:journalId/journal-entry/:journalEntryId', auth, ( request, response ) => {
         const controller: JournalHTTPController = injector.create('JournalHTTPController');
-        return expressRequestHandler(request, response, controller.updateJournalEntryById.bind(controller))
+        return expressRequestHandler(request, response, controller.updateJournalEntryByIdWithRelations.bind(controller))
     });
 
     app.delete('/v0/journal/:journalId/journal-entry/:journalEntryId', auth, ( request, response ) => {

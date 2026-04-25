@@ -19,7 +19,7 @@ import {
 } from "../types/journal/CreateJournalRequest";
 
 import {
-    UpdateJournalEntryRequestSchema,
+    UpdateJournalEntryRequestWithRelationsSchema,
 } from "../types/journal-entry/UpdateJournalEntryRequest";
 
 import {
@@ -181,10 +181,10 @@ export class JournalHTTPController {
         };
     }
 
-    async updateJournalEntryById(request: Request): Promise<HTTPResponse> {
+    async updateJournalEntryByIdWithRelations(request: Request): Promise<HTTPResponse> {
         const requestingAccount = request.requestingAccount;
         const journalEntryId = request.params.journalEntryId;
-        const updateJournalEntryRequest = UpdateJournalEntryRequestSchema.safeParse(request.body);
+        const updateJournalEntryRequest = UpdateJournalEntryRequestWithRelationsSchema.safeParse(request.body);
 
         if (updateJournalEntryRequest.success === false) {
             throw new Error("INVALID_REQUEST");
@@ -193,7 +193,7 @@ export class JournalHTTPController {
         return {
             errors: [],
             status: 200,
-            data:  await this.journalEntryPersistenceService.updateJournalEntryById(
+            data:  await this.journalEntryPersistenceService.updateJournalEntryByIdWithRelations(
                 journalEntryId,
                 updateJournalEntryRequest.data,
                 requestingAccount

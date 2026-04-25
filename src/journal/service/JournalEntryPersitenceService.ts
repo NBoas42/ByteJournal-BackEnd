@@ -2,7 +2,7 @@ import { JournalEntry, JournalEntryWithRelations } from '../types/journal-entry/
 
 import { CreateJournalEntryRequest } from '../types/journal-entry/CreateJournalEntryRequest';
 import { SearchJournalEntryRequest } from '../types/journal-entry/SearchJournalEntryRequest';
-import { UpdateJournalEntryRequest } from '../types/journal-entry/UpdateJournalEntryRequest';
+import { UpdateJournalEntryRequestWithRelations } from '../types/journal-entry/UpdateJournalEntryRequest';
 
 import { Note } from '../types/note/Note';
 import { UpdateNoteRequest } from '../types/note/UpdateNoteRequest';
@@ -57,18 +57,8 @@ export class JournalEntryPersistenceService {
             return this.journalEntryPostgresResource.createJournalEntry(journalEntryToCreate);
         }
         
-        // TODO Make this update with relations
-        async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<boolean> {
-            const journalEntry = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
-            const isOwner = journalEntry.accountId === requestingAccount.id;
-            const isAdmin = requestingAccount.permissionType === "ADMIN";
-            if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
-            }            
-             return this.journalEntryPostgresResource.updateJournalEntryById(id, journalEntryToUpdate);
-        }
 
-        async updateJournalEntryByIdWithRelations (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntryWithRelations> {
+        async updateJournalEntryByIdWithRelations (id: string, journalEntryToUpdate: UpdateJournalEntryRequestWithRelations, requestingAccount: RequestingAccountContext): Promise<JournalEntryWithRelations> {
             const { notes, tasks, review, ...journalEntryFields } = journalEntryToUpdate;
             const { notes: existingNotes, tasks: existingTasks, review: existingReview, ...existingJournalEntryFields } = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
             const isOwner = existingJournalEntryFields.accountId === requestingAccount.id;
