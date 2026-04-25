@@ -12,11 +12,12 @@ export const JournalEntrySchema = z.object({
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 });
-export type JournalEntry = z.infer<typeof JournalEntrySchema>;
 
 export const JournalEntryWithRelationsSchema = JournalEntrySchema.extend({
     notes: z.array(NoteSchema),
     tasks: z.array(TaskSchema),
     review: ReviewSchema.nullable(),
 });
+
+export type JournalEntry = z.infer<typeof JournalEntrySchema>;
 export type JournalEntryWithRelations = z.infer<typeof JournalEntryWithRelationsSchema>;
