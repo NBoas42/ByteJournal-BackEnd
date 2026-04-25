@@ -5,9 +5,9 @@ import "reflect-metadata"
 
 import { initInjector } from './framework/dependency-injection/DependecyInjector';
 
-import { registerAccountRoutes } from './account/http/AccountRoutes';
-import { registerJournalRoutes } from './journal/http/JournalRoutes';
-import { registerAuthRoutes } from './auth/http/AuthRoutes';
+import { registerAccountRoutes } from './modules/account/http/AccountRoutes';
+import { registerJournalRoutes } from './modules/journal/http/JournalRoutes';
+import { registerAuthRoutes } from './modules/auth/http/AuthRoutes';
 
 
 const bootstrap = async () =>{

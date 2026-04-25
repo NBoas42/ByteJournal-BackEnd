@@ -2,23 +2,23 @@ import { Injector } from 'boxed-injector';
 
 import { createDataDBConnection } from '../database/DBConnector';
 
-import { AuthHTTPController } from '../../auth/controller/AuthHttpController';
-import { AuthService } from '../../auth/service/AuthService';
+import { AuthHTTPController } from '../../modules/auth/controller/AuthHttpController';
+import { AuthService } from '../../modules/auth/service/AuthService';
 
-import { AccountHTTPController } from '../../account/controller/AccountHTTPController';
-import { AccountPersistenceService } from '../../account/service/AccountPersitenceService';
-import { AccountPostgresResource } from '../../account/resource/postgres/AccountPostgresResouce';
+import { AccountHTTPController } from '../../modules/account/controller/AccountHTTPController';
+import { AccountPersistenceService } from '../../modules/account/service/AccountPersitenceService';
+import { AccountPostgresResource } from '../../modules/account/resource/postgres/AccountPostgresResouce';
 
-import { JournalHTTPController } from '../../journal/controller/JournalHttpController';
+import { JournalHTTPController } from '../../modules/journal/controller/JournalHttpController';
 
-import { JournalPersistenceService } from '../../journal/service/JournalPersitenceService';
-import { JournalEntryPersistenceService } from '../../journal/service/JournalEntryPersitenceService';
+import { JournalPersistenceService } from '../../modules/journal/service/JournalPersitenceService';
+import { JournalEntryPersistenceService } from '../../modules/journal/service/JournalEntryPersitenceService';
 
-import { JournalPostgresResource } from '../../journal/resource/postgres/JournalPostgresResouce';
-import { JournalEntryPostgresResource } from '../../journal/resource/postgres/JournalEntryPostgresResource';
-import { NotePostgresResource } from '../../journal/resource/postgres/NotePostgresResource';
-import { TaskPostgresResource } from '../../journal/resource/postgres/TaskPostgresResource';
-import { ReviewPostgresResource } from '../../journal/resource/postgres/ReviewPostgresResource';
+import { JournalPostgresResource } from '../../modules/journal/resource/postgres/JournalPostgresResouce';
+import { JournalEntryPostgresResource } from '../../modules/journal/resource/postgres/JournalEntryPostgresResource';
+import { NotePostgresResource } from '../../modules/journal/resource/postgres/NotePostgresResource';
+import { TaskPostgresResource } from '../../modules/journal/resource/postgres/TaskPostgresResource';
+import { ReviewPostgresResource } from '../../modules/journal/resource/postgres/ReviewPostgresResource';
 
 
 let injector: Injector | undefined;

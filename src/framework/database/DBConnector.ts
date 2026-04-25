@@ -1,13 +1,13 @@
 // orm.ts
 import { DataSource } from 'typeorm';
-import { AccountEntity } from '../../account/resource/postgres/AccountEntity';
-import { JournalEntity } from '../../journal/resource/postgres/entity/JournalEntity';
+import { AccountEntity } from '../../modules/account/resource/postgres/AccountEntity';
+import { JournalEntity } from '../../modules/journal/resource/postgres/entity/JournalEntity';
 import { ApplicationConfig } from '../config/config';
-import { JournalEntryEntity } from '../../journal/resource/postgres/entity/JournalEntryEntity';
-import { NoteEntity } from '../../journal/resource/postgres/entity/NoteEntity';
-import { ReviewEntity } from '../../journal/resource/postgres/entity/ReviewEntity';
-import { TaskEntity } from '../../journal/resource/postgres/entity/TaskEntity';
-import { ScratchPadEntity } from '../../journal/resource/postgres/entity/ScratchPadEntity';
+import { JournalEntryEntity } from '../../modules/journal/resource/postgres/entity/JournalEntryEntity';
+import { NoteEntity } from '../../modules/journal/resource/postgres/entity/NoteEntity';
+import { ReviewEntity } from '../../modules/journal/resource/postgres/entity/ReviewEntity';
+import { TaskEntity } from '../../modules/journal/resource/postgres/entity/TaskEntity';
+import { ScratchPadEntity } from '../../modules/journal/resource/postgres/entity/ScratchPadEntity';
 
 const applicationConfig: ApplicationConfig = require('../config/config.json');
 
