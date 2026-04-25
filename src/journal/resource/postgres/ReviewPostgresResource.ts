@@ -6,6 +6,7 @@ import { TypeOrmResource } from '../../../shared/resource/TypeOrmResource';
 import { Review } from '../../types/review/Review';
 import { SearchReviewRequest } from '../../types/review/SearchReviewRequest';
 import { CreateReviewRequest } from '../../types/review/CreateReviewRequest';
+import { UpdateReviewRequest } from '../../types/review/UpdateReviewRequest';
 
 export class ReviewPostgresResource extends TypeOrmResource {
 
@@ -28,6 +29,12 @@ export class ReviewPostgresResource extends TypeOrmResource {
             }
 
             return createdReview as Review;
+        }
+
+        async updateReviewById (id: string, reviewToUpdate: UpdateReviewRequest): Promise<boolean> {
+            const result = await this.reviewRepository.update({ id: id }, reviewToUpdate);
+
+            return result.affected === 1 ? true : false;
         }
 
         async deleteReviewById (id: string): Promise<boolean> {

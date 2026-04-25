@@ -6,6 +6,7 @@ import { TypeOrmResource } from '../../../shared/resource/TypeOrmResource';
 import { Note } from '../../types/note/Note';
 import { SearchNoteRequest } from '../../types/note/SearchNoteRequest';
 import { CreateNoteRequest } from '../../types/note/CreateNoteRequest';
+import { UpdateNoteRequest } from '../../types/note/UpdateNoteRequest';
 
 export class NotePostgresResource extends TypeOrmResource {
 
@@ -28,6 +29,12 @@ export class NotePostgresResource extends TypeOrmResource {
             }
 
             return createdNote as Note;
+        }
+
+        async updateNoteById (id: string, noteToUpdate: UpdateNoteRequest): Promise<boolean> {
+            const result = await this.noteRepository.update({ id: id }, noteToUpdate);
+
+            return result.affected === 1 ? true : false;
         }
 
         async deleteNoteById (id: string): Promise<boolean> {

@@ -6,6 +6,7 @@ import { TypeOrmResource } from '../../../shared/resource/TypeOrmResource';
 import { Task } from '../../types/task/Task';
 import { SearchTaskRequest } from '../../types/task/SearchTaskRequest';
 import { CreateTaskRequest } from '../../types/task/CreateTaskRequest';
+import { UpdateTaskRequest } from '../../types/task/UpdateTaskRequest';
 
 export class TaskPostgresResource extends TypeOrmResource {
 
@@ -28,6 +29,12 @@ export class TaskPostgresResource extends TypeOrmResource {
             }
 
             return createdTask as Task;
+        }
+
+        async updateTaskById (id: string, taskToUpdate: UpdateTaskRequest): Promise<boolean> {
+            const result = await this.taskRepository.update({ id: id }, taskToUpdate);
+
+            return result.affected === 1 ? true : false;
         }
 
         async deleteTaskById (id: string): Promise<boolean> {
