@@ -16,6 +16,9 @@ import { JournalEntryPersistenceService } from '../../journal/service/JournalEnt
 
 import { JournalPostgresResource } from '../../journal/resource/postgres/JournalPostgresResouce';
 import { JournalEntryPostgresResource } from '../../journal/resource/postgres/JournalEntryPostgresResource';
+import { NotePostgresResource } from '../../journal/resource/postgres/NotePostgresResource';
+import { TaskPostgresResource } from '../../journal/resource/postgres/TaskPostgresResource';
+import { ReviewPostgresResource } from '../../journal/resource/postgres/ReviewPostgresResource';
 
 
 let injector: Injector | undefined;
@@ -42,6 +45,9 @@ async function buildInjector(): Promise<Injector> {
   inj.factory('JournalEntryPersistenceService', JournalEntryPersistenceService);
   inj.factory('JournalPostgresResource', JournalPostgresResource);
   inj.factory('JournalEntryPostgresResource', JournalEntryPostgresResource);
+  inj.factory('NotePostgresResource', NotePostgresResource);
+  inj.factory('TaskPostgresResource', TaskPostgresResource);
+  inj.factory('ReviewPostgresResource', ReviewPostgresResource);
 
   return inj;
 }
