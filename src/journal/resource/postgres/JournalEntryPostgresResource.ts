@@ -3,7 +3,7 @@ import { DataSource, Repository, FindOptionsWhere } from 'typeorm';
 import { JournalEntryEntity } from '../postgres/entity/JournalEntryEntity';
 import { TypeOrmResource } from '../../../shared/resource/TypeOrmResource';
 
-import { JournalEntry } from '../../types/journal-entry/JournalEntry';
+import { JournalEntry, JournalEntryWithRelations } from '../../types/journal-entry/JournalEntry';
 import { SearchJournalEntryRequest } from '../../types/journal-entry/SearchJournalEntryRequest';
 import { CreateJournalEntryRequest } from '../../types/journal-entry/CreateJournalEntryRequest';
 import { UpdateJournalEntryRequest } from '../../types/journal-entry/UpdateJournalEntryRequest';
@@ -21,7 +21,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
             this.journalEntryRepository = dbConnection.getRepository(JournalEntryEntity);
         }
 
-        async getJournalEntryByIdWithRelations(id: string): Promise<JournalEntry> {
+        async getJournalEntryByIdWithRelations(id: string): Promise<JournalEntryWithRelations> {
             const journalEntry = await this.journalEntryRepository.findOne({ 
                 where:{ id },
                 relations: ['notes', 'review', 'tasks'],
@@ -31,7 +31,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
                 throw new Error('Not Found');// TODO  Add Better Error Handling to add status
             }
             
-            return journalEntry as JournalEntry;
+            return journalEntry as JournalEntryWithRelations;
         }
 
         async createJournalEntry (journalEntry: CreateJournalEntryRequest): Promise<JournalEntry> {
@@ -44,7 +44,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
             return createdJournalEntry as JournalEntry;
         }
     
-        async updateJournalEntryById (id: string, journalEntryToUpdate: UpdateJournalEntryRequest): Promise<boolean> {
+        async updateJournalEntryById (id: string, journalEntryToUpdate: Pick<UpdateJournalEntryRequest, 'title' | 'tags'>): Promise<boolean> {
             const result = await this.journalEntryRepository.update({id}, journalEntryToUpdate);
 
             return result.affected === 1 ? true:false;

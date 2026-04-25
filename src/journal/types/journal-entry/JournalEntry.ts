@@ -16,7 +16,7 @@ export const JournalEntrySchema = z.object({
 export const JournalEntryWithRelationsSchema = JournalEntrySchema.extend({
     notes: z.array(NoteSchema),
     tasks: z.array(TaskSchema),
-    review: ReviewSchema.nullable(),
+    review: ReviewSchema,
 });
 
 export type JournalEntry = z.infer<typeof JournalEntrySchema>;

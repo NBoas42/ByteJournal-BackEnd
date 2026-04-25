@@ -6,8 +6,8 @@ import { UpdateReviewRequestSchema } from '../review/UpdateReviewRequest';
 export const UpdateJournalEntryRequestSchema = z.object({
     title: z.string().optional(),
     tags: z.array(z.string()).optional(),
-    notes: z.array(UpdateNoteRequestSchema).optional(),
-    tasks: z.array(UpdateTaskRequestSchema).optional(),
-    review: UpdateReviewRequestSchema.nullable().optional(),
+    notes: z.array(UpdateNoteRequestSchema),
+    tasks: z.array(UpdateTaskRequestSchema),
+    review: UpdateReviewRequestSchema,
 });
 export type UpdateJournalEntryRequest = z.infer<typeof UpdateJournalEntryRequestSchema>;
