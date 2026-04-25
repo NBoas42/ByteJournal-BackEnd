@@ -8,8 +8,6 @@ import { Note } from '../types/note/Note';
 import { UpdateNoteRequest } from '../types/note/UpdateNoteRequest';
 import { Task } from '../types/task/Task';
 import { UpdateTaskRequest } from '../types/task/UpdateTaskRequest';
-import { Review } from '../types/review/Review';
-import { UpdateReviewRequest } from '../types/review/UpdateReviewRequest';
 
 import { JournalEntryPostgresResource } from '../resource/postgres/JournalEntryPostgresResource';
 import { NotePostgresResource } from '../resource/postgres/NotePostgresResource';
@@ -70,12 +68,10 @@ export class JournalEntryPersistenceService {
              return this.journalEntryPostgresResource.updateJournalEntryById(id, journalEntryToUpdate);
         }
 
-
         async updateJournalEntryByIdWithRelations (id: string, journalEntryToUpdate: UpdateJournalEntryRequest, requestingAccount: RequestingAccountContext): Promise<JournalEntryWithRelations> {
-            // Pull out the notes, tasks, and review from the journalEntryToUpdate and assign them to their own variable
             const { notes, tasks, review, ...journalEntryFields } = journalEntryToUpdate;
-            const existingJournalEntry = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
-            const isOwner = existingJournalEntry.accountId === requestingAccount.id;
+            const { notes: existingNotes, tasks: existingTasks, review: existingReview, ...existingJournalEntryFields } = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
+            const isOwner = existingJournalEntryFields.accountId === requestingAccount.id;
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             const updateCreateDeleteNotes = async (existingNotes: Note[], requestedNotes: UpdateNoteRequest[]) => {
@@ -86,7 +82,7 @@ export class JournalEntryPersistenceService {
                 for(const note of notesToCreate){
                     await this.notePostgresResource.createNote({
                         journalEntryId: id,
-                        accountId: existingJournalEntry.accountId,
+                        accountId: existingJournalEntryFields.accountId,
                         content: note.content,
                         type: note.type,
                     });
@@ -112,7 +108,7 @@ export class JournalEntryPersistenceService {
                 for(const task of tasksToCreate){
                     await this.taskPostgresResource.createTask({
                         journalEntryId: id,
-                        accountId: existingJournalEntry.accountId,
+                        accountId: existingJournalEntryFields.accountId,
                         title: task.title,
                         description: task.description,
                         status: task.status,
@@ -138,18 +134,14 @@ export class JournalEntryPersistenceService {
                 throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
             }
 
-            await updateCreateDeleteNotes(existingJournalEntry.notes, notes!);
-            
+            await updateCreateDeleteNotes(existingNotes, notes);
+            await updateCreateDeleteTasks(existingTasks, tasks);
 
-            if(tasks){
-                await updateCreateDeleteTasks(existingJournalEntry.tasks, tasks);
-            }
-
-            if(review){
-                await this.reviewPostgresResource.updateReviewById(existingJournalEntry.review.id, {
-                    content: review.content,
-                    rating: review.rating,
-                });
+            if(review !== existingReview){
+                await this.reviewPostgresResource.updateReviewById(existingReview.id, {
+                        content: review.content,
+                        rating: review.rating,
+                    });
             }
 
             if(Object.keys(journalEntryFields).length > 0){
