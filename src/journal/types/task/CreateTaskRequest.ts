@@ -1,15 +1,12 @@
 import * as z from 'zod';
 import { TaskStatusSchema } from './TaskStatus';
 
-export const TaskSchema = z.object({
-    id: z.string(),
+export const CreateTaskRequestSchema = z.object({
     journalEntryId: z.string(),
     accountId: z.string(),
     title: z.string(),
     description: z.string().nullable().optional(),
     status: TaskStatusSchema,
-    createdAt: z.coerce.date(),
-    updatedAt: z.coerce.date(),
     finishedAt: z.coerce.date().nullable().optional(),
 });
-export type Task = z.infer<typeof TaskSchema>;
+export type CreateTaskRequest = z.infer<typeof CreateTaskRequestSchema>;
