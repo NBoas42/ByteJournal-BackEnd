@@ -35,8 +35,11 @@ export class AccountPostgresResource {
 
 
         // TODO Add Specific DTO
-        async createAccount (account: CreateAccountRequest): Promise<boolean> {
-            const result = await this.accountRepository.save(account);
+        async createAccount (account: CreateAccountRequest, permissionType: string = "USER"): Promise<boolean> {
+            const result = await this.accountRepository.save({
+                ...account,
+                permissionType: 'USER',
+            });
             if(!result.id){
                 return false;
             }

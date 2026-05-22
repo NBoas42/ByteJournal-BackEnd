@@ -14,7 +14,7 @@ export function registerAccountRoutes (app: Application, injector: Injector) {
         return expressRequestHandler(request, response, controller.getAccountById.bind(controller))
     });
 
-    app.post('/v0/account', auth,  ( request, response ) => {
+    app.post('/v0/account', ( request, response ) => {
         const controller: AccountHTTPController = injector.create('AccountHTTPController');
         return expressRequestHandler(request, response, controller.createAccount.bind(controller))
     });
