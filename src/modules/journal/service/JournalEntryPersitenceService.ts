@@ -57,7 +57,6 @@ export class JournalEntryPersistenceService {
             return this.journalEntryPostgresResource.createJournalEntry(journalEntryToCreate);
         }
         
-
         async updateJournalEntryByIdWithRelations (id: string, journalEntryToUpdate: UpdateJournalEntryRequestWithRelations, requestingAccount: RequestingAccountContext): Promise<JournalEntryWithRelations> {
             const { notes, tasks, review, ...journalEntryFields } = journalEntryToUpdate;
             const { notes: existingNotes, tasks: existingTasks, review: existingReview, ...existingJournalEntryFields } = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
