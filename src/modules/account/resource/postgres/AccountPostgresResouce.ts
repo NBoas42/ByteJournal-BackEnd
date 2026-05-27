@@ -19,7 +19,7 @@ export class AccountPostgresResource {
         async getAccountById(id: string): Promise<Account> {
             const account = await this.accountRepository.findOne({ where:{ id } });
             if(!account){
-                throw new Error('Not Found');
+                throw new Error('NOT_FOUND');
             }
             return account as Account;
         }
@@ -28,7 +28,7 @@ export class AccountPostgresResource {
         async getAccountByEmail(email: string): Promise<Account> {
             const account = await this.accountRepository.findOne({ where:{ email } });
             if(!account){
-                throw new Error('Not Found');
+                throw new Error('NOT_FOUND');
             }
             return account as Account;
         }

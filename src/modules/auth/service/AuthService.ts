@@ -28,7 +28,7 @@ export class AuthService {
     const decoded = jwt.verify(token, this.config.auth.jwtSecret) as { id: string };
     const account = await this.accountPostgresResource.getAccountById(decoded.id);
     if (!account) {
-        throw new Error('Invalid token');
+        throw new Error('FORBIDDEN');
     }
     return { 
         id: account.id,
@@ -44,11 +44,11 @@ export class AuthService {
         let account = await this.accountPostgresResource.getAccountByEmail(email);
 
         if(!account.id){
-            throw new Error('User Name Or Password Incorrect');
+            throw new Error('INVALID_REQUEST');
         }
 
         if(!bcrypt.compareSync(password,account.password)){
-            throw new Error('User Name Or Password Incorrect');
+            throw new Error('FORBIDDEN');
         }
 
         const token = jwt.sign(

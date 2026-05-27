@@ -27,7 +27,7 @@ export class JournalPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
 
             return journal;
@@ -43,7 +43,7 @@ export class JournalPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
 
             return this.journalPostgresResource.updateJournalById(id, journalToUpdate);
@@ -55,7 +55,7 @@ export class JournalPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Journal Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
 
              return this.journalPostgresResource.deleteJournalById(id);

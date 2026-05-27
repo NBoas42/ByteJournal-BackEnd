@@ -28,7 +28,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
             });
 
             if(!journalEntry){
-                throw new Error('Not Found');// TODO  Add Better Error Handling to add status
+                throw new Error('NOT_FOUND');// TODO  Add Better Error Handling to add status
             }
             
             return journalEntry as JournalEntryWithRelations;
@@ -38,7 +38,7 @@ export class JournalEntryPostgresResource extends TypeOrmResource {
             const createdJournalEntry = await this.journalEntryRepository.save(journalEntry);
 
             if(!createdJournalEntry.id){
-                throw new Error('Could Not Create JournalEntry')
+                throw new Error('INVALID_REQUEST');
             }
 
             return createdJournalEntry as JournalEntry;

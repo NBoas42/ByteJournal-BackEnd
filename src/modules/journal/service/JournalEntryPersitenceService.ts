@@ -8,6 +8,8 @@ import { Note } from '../types/note/Note';
 import { UpdateNoteRequest } from '../types/note/UpdateNoteRequest';
 import { Task } from '../types/task/Task';
 import { UpdateTaskRequest } from '../types/task/UpdateTaskRequest';
+import { Review } from '../types/review/Review';
+import { UpdateReviewRequest } from '../types/review/UpdateReviewRequest';
 
 import { JournalEntryPostgresResource } from '../resource/postgres/JournalEntryPostgresResource';
 import { NotePostgresResource } from '../resource/postgres/NotePostgresResource';
@@ -48,7 +50,7 @@ export class JournalEntryPersistenceService {
         const isOwner = journalEntry.accountId === requestingAccount.id;
         const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
-            throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+            throw new Error('FORBIDDEN')
         }
             return journalEntry;
         }
@@ -57,13 +59,14 @@ export class JournalEntryPersistenceService {
             return this.journalEntryPostgresResource.createJournalEntry(journalEntryToCreate);
         }
         
+        // To Do Move Sync Functions to respective services
         async updateJournalEntryByIdWithRelations (id: string, journalEntryToUpdate: UpdateJournalEntryRequestWithRelations, requestingAccount: RequestingAccountContext): Promise<JournalEntryWithRelations> {
             const { notes, tasks, review, ...journalEntryFields } = journalEntryToUpdate;
             const { notes: existingNotes, tasks: existingTasks, review: existingReview, ...existingJournalEntryFields } = await this.journalEntryPostgresResource.getJournalEntryByIdWithRelations(id);
             const isOwner = existingJournalEntryFields.accountId === requestingAccount.id;
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
-            const updateCreateDeleteNotes = async (existingNotes: Note[], requestedNotes: UpdateNoteRequest[]) => {
+            const syncNotes = async (existingNotes: Note[], requestedNotes: UpdateNoteRequest[]) => {
                 const notesToCreate = requestedNotes.filter(note => !note.id);
                 const notesToUpdate = requestedNotes.filter(note => note.id);
                 const notesToDelete = existingNotes.filter(existing => !requestedNotes.some(note => note.id === existing.id));
@@ -89,7 +92,7 @@ export class JournalEntryPersistenceService {
                 }
             };
 
-            const updateCreateDeleteTasks = async (existingTasks: Task[], requestedTasks: UpdateTaskRequest[]) => {
+            const syncTasks = async (existingTasks: Task[], requestedTasks: UpdateTaskRequest[]) => {
                 const tasksToCreate = requestedTasks.filter(task => !task.id);
                 const tasksToUpdate = requestedTasks.filter(task => task.id);
                 const tasksToDelete = existingTasks.filter(existing => !requestedTasks.some(task => task.id === existing.id));
@@ -119,19 +122,22 @@ export class JournalEntryPersistenceService {
                 }
             };
 
+            const syncReview = async (existingReview: Review, review: UpdateReviewRequest) => {
+                if(review !== existingReview){
+                    await this.reviewPostgresResource.updateReviewById(existingReview.id, {
+                            content: review.content,
+                            rating: review.rating,
+                        });
+                }
+            };
+
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+                throw new Error('FORBIDDEN')
             }
 
-            await updateCreateDeleteNotes(existingNotes, notes);
-            await updateCreateDeleteTasks(existingTasks, tasks);
-
-            if(review !== existingReview){
-                await this.reviewPostgresResource.updateReviewById(existingReview.id, {
-                        content: review.content,
-                        rating: review.rating,
-                    });
-            }
+            await syncNotes(existingNotes, notes);
+            await syncTasks(existingTasks, tasks);
+            await syncReview(existingReview, review);
 
             if(Object.keys(journalEntryFields).length > 0){
                 await this.journalEntryPostgresResource.updateJournalEntryById(id, journalEntryFields);
@@ -145,7 +151,7 @@ export class JournalEntryPersistenceService {
         const isOwner = journalEntry.accountId === requestingAccount.id;
         const isAdmin = requestingAccount.permissionType === "ADMIN";
         if(!isOwner && !isAdmin){
-            throw new Error('FORBIDDEN: Journal Entry Does Not Belong To User')
+            throw new Error('FORBIDDEN')
         }
             return this.journalEntryPostgresResource.deleteJournalEntryById(id);
         }

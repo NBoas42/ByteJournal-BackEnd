@@ -25,7 +25,7 @@ export class ReviewPostgresResource extends TypeOrmResource {
             const createdReview = await this.reviewRepository.save(review);
 
             if(!createdReview.id){
-                throw new Error('Could Not Create Review')
+                throw new Error('INVALID_REQUEST');
             }
 
             return createdReview as Review;

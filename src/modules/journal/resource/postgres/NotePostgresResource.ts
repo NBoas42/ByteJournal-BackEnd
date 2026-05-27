@@ -25,7 +25,7 @@ export class NotePostgresResource extends TypeOrmResource {
             const createdNote = await this.noteRepository.save(note);
 
             if(!createdNote.id){
-                throw new Error('Could Not Create Note')
+                throw new Error('INVALID_REQUEST');
             }
 
             return createdNote as Note;

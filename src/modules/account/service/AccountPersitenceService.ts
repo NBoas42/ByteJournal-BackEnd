@@ -28,7 +28,7 @@ export class AccountPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
             return account;
         }
@@ -46,7 +46,7 @@ export class AccountPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
 
             return this.accountPostgresResource.updateAccountById(id, accountToUpdate);
@@ -58,7 +58,7 @@ export class AccountPersistenceService {
             const isAdmin = requestingAccount.permissionType === "ADMIN";
 
             if(!isOwner && !isAdmin){
-                throw new Error('FORBIDDEN: Acccount Does Not Belong To Requesting Account')
+                throw new Error('FORBIDDEN')
             }
 
             return this.accountPostgresResource.deleteAccountById(id);

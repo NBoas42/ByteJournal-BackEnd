@@ -23,7 +23,7 @@ export class JournalPostgresResource {
             const journal = await this.journalRepository.findOne({ where:{ id } });
             if(!journal){
                 // TODO  Add Better Error Handling to add status
-                throw new Error('Not Found');
+                throw new Error('NOT_FOUND');
             }
             return journal as Journal;
         }
@@ -31,7 +31,7 @@ export class JournalPostgresResource {
         async createJournal (journal: CreateJournalRequest): Promise<Journal> {
             const createdJournal = await this.journalRepository.save(journal);
             if(!createdJournal.id){
-                throw new Error('Could Not Create Journal')
+                throw new Error('INVALID_REQUEST');
             }
             return createdJournal as Journal;
         }
